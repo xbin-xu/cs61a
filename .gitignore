@@ -2,6 +2,7 @@
 .ok_history
 .ok_storage.dat
 .ok_storage.dir
+.ok_consent
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
