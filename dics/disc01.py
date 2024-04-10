@@ -13,7 +13,7 @@ def race(x, y):
 
     race(3, 4)  # Runs forever
     """
-    assert y > x and y <= 2 * x, "the hare must be fast but not too fast"
+    assert y > x and y <= 2 * x, 'the hare must be fast but not too fast'
     tortoise, hare, minutes = 0, 0, 0
     while minutes == 0 or tortoise - hare:
         tortoise += x

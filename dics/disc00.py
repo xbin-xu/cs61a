@@ -16,7 +16,7 @@ def h(x, y):
     >>> h(12, 789)
     12789
     """
-    assert x > 0 and y > 0, "requre two positive intergers"
+    assert x > 0 and y > 0, 'requre two positive intergers'
     return int(str(x) + str(y))
 
 
