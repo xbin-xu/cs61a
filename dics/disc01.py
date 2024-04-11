@@ -127,12 +127,12 @@ Answer the following questions with your group. Step through the diagram to chec
 1) What determines how many different frames appear in an environment diagram?
 
 The number of functions defined in the code
-The number of call expressions in the code
+The number of call expressions in the code                                  [√]
 The number of return statements in the code
-The number of times user-defined functions are called when running the code [√]
+The number of times user-defined functions are called when running the code
 2) What happens to the return value of pass(bottles)?
 
-It is used as the new value of remaining in the global frame
+It is used as the new value of remaining in the global frame                [√]
 It is used as the new value of bottles in the global frame
 It is used as the new value of pass in the global frame
 None of the above
