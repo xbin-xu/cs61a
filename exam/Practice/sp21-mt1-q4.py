@@ -35,10 +35,12 @@ def restrict_domain(f, low_d, high_d):
     >>> f(100)
     10.0
     """
-    _________
-        _________
-            _________
-        _________
+
+    def wrapper_method_name(x):
+        if x >= low_d and x <= high_d:
+            return f(x)
+        return float("-inf")
+
     return wrapper_method_name
 
 
@@ -60,7 +62,8 @@ def restrict_range(f, low_r, high_r):
 
     >>> cube = lambda x: x * x * x
     >>> f = restrict_range(cube, 1, 1000)
-    1>>> f(1)
+    >>> f(1)
+    1
     >>> f(-5)
     -inf
     >>> f(5)
@@ -70,11 +73,13 @@ def restrict_range(f, low_r, high_r):
     >>> f(11)
     -inf
     """
-    _________
-        _________
-        _________
-            _________
-        _________
+
+    def wrapper_method_name(x):
+        tmp = f(x)
+        if tmp >= low_r and tmp <= high_r:
+            return tmp
+        return float("-inf")
+
     return wrapper_method_name
 
 
@@ -93,7 +98,7 @@ def restrict_both(f, low_d, high_d, low_r, high_r):
     and a range restricted to (LOW_R, HIGH_R).
 
     >>> diva = lambda x: (10000 // x) * 9
-    >>> f = enforce_both(diva, 1, 1000, 100, 999)
+    >>> f = restrict_both(diva, 1, 1000, 100, 999)
     >>> f(0)
     -inf
     >>> f(10000)
@@ -105,5 +110,4 @@ def restrict_both(f, low_d, high_d, low_r, high_r):
     >>> f(1000)
     -inf
     """
-    _____________
-
+    return restrict_range(restrict_domain(f, low_d, high_d), low_r, high_r)

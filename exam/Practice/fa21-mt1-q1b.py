@@ -13,13 +13,20 @@ def tik(tok):
 
     >>> tik(5)(6)
     5 6
+    >>> tik(tik(5)(print(6)))(print(7))
+    6
+    5 None
+    7
+    None None
     """
 
     def insta(gram):
         ...  # The implementation of this function has been omitted.
+        print(tok, gram)
 
     return insta
 
 
 # i. (4.0 pt) What would the interactive Python interpreter
 # display upon evaluating the expression: tik(tik(5)(print(6)))(print(7))
+# Notes: evaluate operators first, then operands

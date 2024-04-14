@@ -32,10 +32,10 @@ def again(f):
     3
     """
     n = 1
-    _____
+    while True:
         m = 0
-        _____
-            _____
-                _____
-            _____
+        while m < n:
+            if f(m) != f(n):
+                return n
+            m = m + 1
         n = n + 1
