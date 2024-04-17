@@ -48,7 +48,8 @@ as it would appear in the diagram.
 Global frame
     r -> func f(f) [parent=Global]
     n -> 10
-    g -> func lambda(n) [parent=Global]
+    # g -> func lambda(n) [parent=Global]
+    g -> func lambda(k) [parent=f1]
 f1: lambda<line 6> [parent=Global]
     n -> -1
     Return Value -> func lambda(k) [parent=f1] <----+
@@ -138,7 +139,8 @@ def streak(n):
     if d < 1 or d > 6:
         return False
     while n:
-        if n >= 10 and n % 10 != n // 10 % 10:
+        # if n >= 10 and n % 10 != n // 10 % 10:
+        if d != n % 10:
             return False
         n = n // 10
     return True
@@ -220,11 +222,14 @@ def streak(n):
     >>> streak(99999) # 9 is not allowed in a dice integer.
     False
     """
-    return (
-        count_if(lambda x: x == 1)(n) == count_if(lambda x: True)(n)
-        or count_if(lambda x: x == 2)(n) == count_if(lambda x: True)(n)
-        or count_if(lambda x: x == 3)(n) == count_if(lambda x: True)(n)
-        or count_if(lambda x: x == 4)(n) == count_if(lambda x: True)(n)
-        or count_if(lambda x: x == 5)(n) == count_if(lambda x: True)(n)
-        or count_if(lambda x: x == 6)(n) == count_if(lambda x: True)(n)
-    )
+    return count_if(lambda x: x > 0 and x < 7 and x == n % 10)(n) == count_if(
+        lambda x: True
+    )(n)
+    # return (
+    #     count_if(lambda x: x == 1)(n) == count_if(lambda x: True)(n)
+    #     or count_if(lambda x: x == 2)(n) == count_if(lambda x: True)(n)
+    #     or count_if(lambda x: x == 3)(n) == count_if(lambda x: True)(n)
+    #     or count_if(lambda x: x == 4)(n) == count_if(lambda x: True)(n)
+    #     or count_if(lambda x: x == 5)(n) == count_if(lambda x: True)(n)
+    #     or count_if(lambda x: x == 6)(n) == count_if(lambda x: True)(n)
+    # )
