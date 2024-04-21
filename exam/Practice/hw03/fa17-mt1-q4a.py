@@ -1,5 +1,6 @@
 """
 4. (9 points) Digital
+
 (a) (3 pt) Implement collapse, which takes a non-negative integer,
 and returns the result of removing all digits from it that duplicate the
 digit immediately to their right.
@@ -22,9 +23,9 @@ def collapse(n):
     12013
     """
     left, last = n // 10, n % 10
-    if _____:
+    if left == 0:
         return last
-    elif _____ == _____:
-        return collapse(_____)
+    elif left % 10 == last:
+        return collapse(left)
     else:
-        return collapse(_____) * 10 + _____
+        return collapse(left) * 10 + last

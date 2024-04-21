@@ -1,7 +1,7 @@
-LAB_SOURCE_FILE=__file__
+LAB_SOURCE_FILE = __file__
 
 
-HW_SOURCE_FILE=__file__
+HW_SOURCE_FILE = __file__
 
 
 def num_eights(n):
@@ -28,6 +28,10 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    assert n >= 0, "require a non-negative integer"
+    if n == 0:
+        return 0
+    return num_eights(n // 10) + (n % 10 == 8)
 
 
 def digit_distance(n):
@@ -50,6 +54,9 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n < 10:
+        return 0
+    return digit_distance(n // 10) + abs((n // 10 % 10) - (n % 10))
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -73,9 +80,34 @@ def interleaved_sum(n, odd_func, even_func):
     """
     "*** YOUR CODE HERE ***"
 
+    # def sum_from(k):
+    #     if k > n:
+    #         return 0
+    #     elif k == n:
+    #         return odd_func(k)
+    #     else:
+    #         return odd_func(k) + even_func(k + 1) + sum_from(k + 2)
+    #
+    # return sum_from(1)
+
+    if n < 0:
+        return 0
+
+    # def is_odd(n):
+    #     if n == 0:
+    #         return False
+    #     elif n == 1:
+    #         return True
+    #     else:
+    #         return is_odd(n - 2)
+
+    func = odd_func if n & 1 else even_func
+    return interleaved_sum(n - 1, odd_func, even_func) + func(n)
+
 
 def next_larger_coin(coin):
     """Returns the next larger coin in order.
+
     >>> next_larger_coin(1)
     5
     >>> next_larger_coin(5)
@@ -91,8 +123,10 @@ def next_larger_coin(coin):
     elif coin == 10:
         return 25
 
+
 def next_smaller_coin(coin):
     """Returns the next smaller coin in order.
+
     >>> next_smaller_coin(25)
     10
     >>> next_smaller_coin(10)
@@ -108,8 +142,10 @@ def next_smaller_coin(coin):
     elif coin == 5:
         return 1
 
+
 def count_coins(total):
     """Return the number of ways to make change using coins of value of 1, 5, 10, 25.
+
     >>> count_coins(15)
     6
     >>> count_coins(10)
@@ -127,10 +163,35 @@ def count_coins(total):
     """
     "*** YOUR CODE HERE ***"
 
+    # def constrained_count(total, smallest_coin):
+    #     if total == 0:
+    #         return 1
+    #     if total < 0:
+    #         return 0
+    #     if smallest_coin == None:
+    #         return 0
+    #     without_coin = constrained_count(total, next_larger_coin(smallest_coin))
+    #     with_coin = constrained_count(total - smallest_coin, smallest_coin)
+    #     return without_coin + with_coin
+    #
+    # return constrained_count(total, 1)
+
+    def func(total, coin):
+        if total < 0:
+            return 0
+        if total == 0:
+            return 1
+        if coin == None:
+            return 0
+        return func(total - coin, coin) + func(total, next_smaller_coin(coin))
+
+    return func(total, 25)
+
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
     print("Move the top disk from rod", origin, "to rod", destination)
+
 
 def move_stack(n, start, end):
     """Print the moves required to move n disks on the start pole to the end
@@ -161,9 +222,17 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    if n == 1:
+        print_move(start, end)
+    else:
+        other = 6 - start - end
+        move_stack(n - 1, start, other)
+        print_move(start, end)
+        move_stack(n - 1, other, end)
 
 
 from operator import sub, mul
+
 
 def make_anonymous_factorial():
     """Return the value of an expression that computes factorial.
@@ -176,5 +245,6 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
-
+    return (lambda f: lambda n: f(f, n))(
+        lambda f, n: 1 if n == 1 else mul(n, f(f, sub(n, 1)))
+    )
