@@ -15,6 +15,9 @@ def swipe(n):
         print(n)
     else:
         "*** YOUR CODE HERE ***"
+        print(n % 10)
+        swipe(n // 10)
+        print(n % 10)
 
 
 # Q2: Skip Factorial
@@ -26,8 +29,8 @@ def skip_factorial(n):
     >>> skip_factorial(8) # 8 * 6 * 4 * 2
     384
     """
-    if _____:
-        return _____
+    if n <= 1:
+        return 1
     else:
         return n * skip_factorial(n - 2)
 
@@ -44,6 +47,13 @@ def is_prime(n):
     True
     """
     "*** YOUR CODE HERE ***"
+
+    def divisor(i):
+        if i == n:
+            return True
+        return n % i != 0 and divisor(i + 1)
+
+    return divisor(2)
 
 
 # Q4: Recursive Hailstone
@@ -73,11 +83,16 @@ def hailstone(n):
 
 
 def even(n):
-    return _____
+    return hailstone(n // 2) + 1
 
 
 def odd(n):
     "*** YOUR CODE HERE ***"
+    if n == 1:
+        return 1
+    return hailstone(3 * n + 1) + 1
+
+
 # Q5: Sevens
 def sevens(n, k):
     """Return the (clockwise) position of who says n among k players.
@@ -100,6 +115,15 @@ def sevens(n, k):
         if i == n:
             return who
         "*** YOUR CODE HERE ***"
+        if i % 7 == 0 or has_seven(i):
+            direction = -direction
+        who = who + direction
+        if who > k:
+            who = 1
+        elif who < 1:
+            who = k
+        return f(i + 1, who, direction)
+
     return f(1, 1, 1)
 
 
@@ -114,3 +138,25 @@ def has_seven(n):
 
 # Q6: Karel the Robot
 # https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html
+"""
+# write any code you want
+from karel.stanfordkarel import *
+
+def turn_around():
+   turn_left()
+   turn_left()
+
+def goto_center():
+   if front_is_clear():
+      move()
+      if front_is_clear():
+         move()
+      goto_center()
+      if front_is_blocked():
+         turn_around()
+      move()
+
+def main():
+   # your code here...
+   goto_center()
+"""
