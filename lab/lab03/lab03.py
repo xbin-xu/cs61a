@@ -1,4 +1,4 @@
-LAB_SOURCE_FILE=__file__
+LAB_SOURCE_FILE = __file__
 
 
 def print_if(s, f):
@@ -15,6 +15,8 @@ def print_if(s, f):
     """
     for x in s:
         "*** YOUR CODE HERE ***"
+        if f(x):
+            print(x)
 
 
 def close(s, k):
@@ -33,6 +35,7 @@ def close(s, k):
     count = 0
     for i in range(len(s)):  # Use a range to loop over indices
         "*** YOUR CODE HERE ***"
+        count += abs(s[i] - i) <= k
     return count
 
 
@@ -47,10 +50,11 @@ def close_list(s, k):
     >>> close_list(t, 2)  # 2, 3, 4, and 5 are all within 2 of their index
     [2, 4, 3, 5]
     """
-    return [___ for i in range(len(s)) if ___]
+    return [s[i] for i in range(len(s)) if abs(s[i] - i) <= k]
 
 
 from math import sqrt
+
 
 def squares(s):
     """Returns a new list containing square roots of the elements of the
@@ -63,11 +67,12 @@ def squares(s):
     >>> squares(seq)
     []
     """
-    return [___ for n in s if ___]
+    return [round(sqrt(n)) for n in s if int(sqrt(n)) ** 2 == n]
+    # return [int(sqrt(n)) for n in s if int(sqrt(n)) ** 2 == n]
 
 
 def double_eights(n):
-    """ Returns whether or not n has two digits in row that
+    """Returns whether or not n has two digits in row that
     are the number 8. Assume n has at least two digits in it.
 
     >>> double_eights(1288)
@@ -88,6 +93,10 @@ def double_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    last, second_last = n % 10, n // 10 % 10
+    if n < 10:
+        return False
+    return (last == 8 and second_last == 8) or double_eights(n // 10)
 
 
 def make_onion(f, g):
@@ -114,12 +123,13 @@ def make_onion(f, g):
     >>> can_reach_string("peach", "folding", 4)   # Not possible
     False
     """
+
     def can_reach(x, y, limit):
         if limit < 0:
-            return ____
+            return False
         elif x == y:
-            return ____
+            return True
         else:
-            return can_reach(____, ____, limit - 1) or can_reach(____, ____, limit - 1)
-    return can_reach
+            return can_reach(f(x), y, limit - 1) or can_reach(g(x), y, limit - 1)
 
+    return can_reach
