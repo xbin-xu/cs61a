@@ -7,7 +7,7 @@ def divide(quotients, divisors):
     >>> divide(range(1, 5), range(20, 25))
     {1: [20, 21, 22, 23, 24], 2: [20, 22, 24], 3: [21, 24], 4: [20, 24]}
     """
-    return {____: ____ for ____ in ____}
+    return {q: [d for d in divisors if d % q == 0] for q in quotients}
 
 
 def buy(required_fruits, prices, total_amount):
@@ -24,14 +24,16 @@ def buy(required_fruits, prices, total_amount):
     [6 apples][2 kiwis]
     [9 apples][1 kiwi]
     """
+
     def add(fruits, amount, cart):
         if fruits == [] and amount == 0:
             print(cart)
         elif fruits and amount > 0:
             fruit = fruits[0]
-            price = ____
-            for k in ____:
-                add(____, ____, ____)
+            price = prices[fruit]
+            for k in range(1, amount // price + 1):
+                add(fruits[1:], amount - k * price, cart + display(fruit, k))
+
     add(required_fruits, total_amount, '')
 
 
@@ -49,9 +51,9 @@ def display(fruit, count):
     return '[' + str(count) + ' ' + fruit + ']'
 
 
-
-
 from math import sqrt
+
+
 def distance(city_a, city_b):
     """
     >>> city_a = make_city('city_a', 0, 1)
@@ -64,6 +66,11 @@ def distance(city_a, city_b):
     5.0
     """
     "*** YOUR CODE HERE ***"
+    return sqrt(
+        (get_lat(city_a) - get_lat(city_b)) ** 2
+        + (get_lon(city_a) - get_lon(city_b)) ** 2
+    )
+
 
 def closer_city(lat, lon, city_a, city_b):
     """
@@ -81,6 +88,11 @@ def closer_city(lat, lon, city_a, city_b):
     'Bucharest'
     """
     "*** YOUR CODE HERE ***"
+    city = make_city('', lat, lon)
+    return get_name(
+        city_a if distance(city, city_a) < distance(city, city_b) else city_b
+    )
+
 
 def check_city_abstraction():
     """
@@ -105,6 +117,7 @@ def check_city_abstraction():
     >>> change_abstraction(False)
     """
 
+
 # Treat all the following code as being behind an abstraction layer,
 # you shouldn't need to look at it.
 def make_city(name, lat, lon):
@@ -118,9 +131,10 @@ def make_city(name, lat, lon):
     1
     """
     if change_abstraction.changed:
-        return {"name" : name, "lat" : lat, "lon" : lon}
+        return {"name": name, "lat": lat, "lon": lon}
     else:
         return [name, lat, lon]
+
 
 def get_name(city):
     """
@@ -133,6 +147,7 @@ def get_name(city):
     else:
         return city[0]
 
+
 def get_lat(city):
     """
     >>> city = make_city('Berkeley', 0, 1)
@@ -144,6 +159,7 @@ def get_lat(city):
     else:
         return city[1]
 
+
 def get_lon(city):
     """
     >>> city = make_city('Berkeley', 0, 1)
@@ -154,6 +170,7 @@ def get_lon(city):
         return city["lon"]
     else:
         return city[2]
+
 
 ###############
 
@@ -167,5 +184,5 @@ def change_abstraction(change):
     """
     change_abstraction.changed = change
 
-change_abstraction.changed = False
 
+change_abstraction.changed = False
