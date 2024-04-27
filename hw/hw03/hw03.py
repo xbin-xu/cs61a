@@ -248,3 +248,11 @@ def make_anonymous_factorial():
     return (lambda f: lambda n: f(f, n))(
         lambda f, n: 1 if n == 1 else mul(n, f(f, sub(n, 1)))
     )
+
+    # Alternate solution:
+    # return lambda n: (lambda f: f(f, n))(
+    #     lambda fact, n: 1 if n == 1 else mul(n, fact(fact, sub(n, 1)))
+    # )
+
+    # Alternate solution:
+    # return (lambda f: f(f))(lambda f: lambda x: 1 if x == 0 else x * f(f)(x - 1))
