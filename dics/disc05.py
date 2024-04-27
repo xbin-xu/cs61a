@@ -30,6 +30,8 @@ def is_tree(tree):
 t2 = tree(5, [tree(6), tree(7)])
 t1 = tree(3, [tree(4), t2])
 result = label(min(branches(max([t1, t2], key=label)), key=label))
+assert result == 6
+# print(result)  # 6
 
 
 # Q2: Has Path
@@ -49,12 +51,14 @@ def has_path(t, p):
     >>> has_path(t1, [3, 4, 5, 6])  # There is no path with these labels
     False
     """
-    if p == ____:  # when len(p) is 1
+    if p == [label(t)]:  # when len(p) is 1
         return True
-    elif label(t) != ____:
+    elif label(t) != p[0]:
         return False
     else:
         "*** YOUR CODE HERE ***"
+        return any([has_path(b, p[1:]) for b in branches(t)])
+
 
 # Q3: Find Path
 def find_path(t, x):
@@ -72,12 +76,18 @@ def find_path(t, x):
     >>> print(find_path(t1, 2))
     None
     """
-    if ____:
-        return ____
-    ____:
-        path = ____
+    # if label(t) == x:
+    #     return [x]
+    # elif not is_leaf(t):
+    #     path = [i for i in [find_path(b, x) for b in branches(t)] if i != None]
+    #     if path:
+    #         return [label(t)] + path[0]
+    # return None
+
+    if label(t) == x:
+        return [x]
+    for b in branches(t):
+        path = find_path(b, x)
         if path:
-            return ____
+            return [label(t)] + path
     return None
-
-
