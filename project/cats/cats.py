@@ -1,5 +1,6 @@
 """Typing test implementation"""
 
+from time import thread_time
 from utils import lower, split, remove_punctuation, lines_from_file
 from ucb import main, interact, trace
 from datetime import datetime
@@ -31,6 +32,13 @@ def pick(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    assert k >= 0, 'k should be a noe-negative index'
+    for paragraph in paragraphs:
+        if select(paragraph):
+            if k == 0:
+                return paragraph
+            k -= 1
+    return ''
     # END PROBLEM 1
 
 
@@ -50,6 +58,19 @@ def about(subject):
     assert all([lower(x) == x for x in subject]), 'subjects should be lowercase.'
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+
+    def select(paragraph):
+        for word in split(lower(remove_punctuation(paragraph))):
+            if word in subject:
+                return True
+        return False
+
+    return select
+
+    # Alternate solution:
+    # return lambda paragraph: bool(
+    #     set(split(lower(remove_punctuation(paragraph)))) & set(subject)
+    # )
     # END PROBLEM 2
 
 
@@ -80,6 +101,13 @@ def accuracy(typed, source):
     source_words = split(source)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    typed_len, source_len = len(typed_words), len(source_words)
+    if typed_len == 0:
+        return 100.0 if source_len == 0 else 0.0
+    correct_cnt = sum(
+        typed_words[i] == source_words[i] for i in range(0, min(typed_len, source_len))
+    )
+    return correct_cnt / typed_len * 100
     # END PROBLEM 3
 
 
@@ -98,6 +126,7 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return len(typed) / 5 * 60 / elapsed
     # END PROBLEM 4
 
 
@@ -127,6 +156,18 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    if typed_word in word_list:
+        return typed_word
+
+    source_word = min(
+        [word for word in word_list],
+        key=lambda source_word: diff_function(typed_word, source_word, limit),
+    )
+    return (
+        source_word
+        if diff_function(typed_word, source_word, limit) <= limit
+        else typed_word
+    )
     # END PROBLEM 5
 
 
@@ -153,7 +194,16 @@ def feline_fixes(typed, source, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    # assert False, 'Remove this line'
+    if limit < 0:
+        return 0
+    typed_len, source_len = len(typed), len(source)
+    if typed_len == 0 or source_len == 0:
+        return max(typed_len, source_len)
+    elif typed[0] == source[0]:
+        return feline_fixes(typed[1:], source[1:], limit)
+    else:
+        return feline_fixes(typed[1:], source[1:], limit - 1) + 1
     # END PROBLEM 6
 
 
@@ -165,10 +215,12 @@ def feline_fixes(typed, source, limit):
 def minimum_mewtations(typed, source, limit):
     """A diff function that computes the edit distance from TYPED to SOURCE.
     This function takes in a string TYPED, a string SOURCE, and a number LIMIT.
+
     Arguments:
         typed: a starting word
         source: a string representing a desired goal word
         limit: a number representing an upper bound on the number of edits
+
     >>> big_limit = 10
     >>> minimum_mewtations("cats", "scat", big_limit)       # cats -> scats -> scat
     2
@@ -177,31 +229,58 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
-    if ___________: # Base cases should go here, you may add more base cases as needed.
+    # # assert False, 'Remove this line'
+    if limit < 0:  # Base cases should go here, you may add more base cases as needed.
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return 0
         # END
+    if len(typed) == 0 or len(source) == 0:
+        return max(len(typed), len(source))
     # Recursive cases should go below here
-    if ___________: # Feel free to remove or add additional cases
+    if typed[0] == source[0]:  # Feel free to remove or add additional cases
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return minimum_mewtations(typed[1:], source[1:], limit)
         # END
     else:
-        add = ... # Fill in these lines
-        remove = ...
-        substitute = ...
+        add = minimum_mewtations(typed, source[1:], limit - 1)  # Fill in these lines
+        remove = minimum_mewtations(typed[1:], source, limit - 1)
+        substitute = minimum_mewtations(typed[1:], source[1:], limit - 1)
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return min(add, remove, substitute) + 1
         # END
 
 
 def final_diff(typed, source, limit):
     """A diff function that takes in a string TYPED, a string SOURCE, and a number LIMIT.
     If you implement this function, it will be used."""
-    assert False, 'Remove this line to use your final_diff function.'
+    # assert False, 'Remove this line to use your final_diff function.'
+    if limit < 0:
+        return 0
+    if len(typed) == 0 or len(source) == 0:
+        if source in ['s', 'es', 'ing', 'e', 'ed']:
+            return 1
+        return max(len(typed), len(source))
+        # return 1
+    if (
+        len(typed) > 1
+        and len(source) > 1
+        and typed[0] == source[1]
+        and typed[1] == source[0]
+    ):
+        return minimum_mewtations(typed[2:], source[2:], limit - 1) + 1
+    if typed[0] == source[0]:
+        return minimum_mewtations(typed[1:], source[1:], limit)
+    else:
+        add = minimum_mewtations(typed, source[1:], limit - 1)  # Fill in these lines
+        remove = minimum_mewtations(typed[1:], source, limit - 1)
+        substitute = minimum_mewtations(typed[1:], source[1:], limit - 1)
+        return min(add, remove, substitute) + 1
 
-FINAL_DIFF_LIMIT = 6 # REPLACE THIS WITH YOUR LIMIT
+
+FINAL_DIFF_LIMIT = 6  # REPLACE THIS WITH YOUR LIMIT
 
 
 ###########
@@ -234,6 +313,15 @@ def report_progress(typed, source, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    assert len(typed) <= len(source), "the word in typed should not more than souce"
+    correct_cnt = 0
+    for i in range(0, len(typed)):
+        if typed[i] != source[i]:
+            break
+        correct_cnt += 1
+    progress = correct_cnt / len(source)
+    upload({'id': user_id, 'progress': progress})
+    return progress
     # END PROBLEM 8
 
 
@@ -256,6 +344,15 @@ def time_per_word(words, timestamps_per_player):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    times = []
+    for player in timestamps_per_player:
+        elapsed_time = []
+        for i in range(1, len(player)):
+            # elapsed_time += [player[i] - player[i - 1]]
+            elapsed_time.append(player[i] - player[i - 1])
+        # times += [elapsed_time]
+        times.append(elapsed_time)
+    return match(words, times)
     # END PROBLEM 9
 
 
@@ -274,10 +371,20 @@ def fastest_words(match):
     >>> p1
     [4, 1, 6]
     """
-    player_indices = range(len(get_all_times(match)))  # contains an *index* for each player
-    word_indices = range(len(get_all_words(match)))    # contains an *index* for each word
+    player_indices = range(
+        len(get_all_times(match))
+    )  # contains an *index* for each player
+    word_indices = range(len(get_all_words(match)))  # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    res = [[] for _ in player_indices]
+    for word_index in word_indices:
+        player_num = min(
+            player_indices, key=lambda player_num: time(match, player_num, word_index)
+        )
+        # res[player_num] += [get_word(match, word_index)]
+        res[player_num].append(get_word(match, word_index))
+    return res
     # END PROBLEM 10
 
 
@@ -296,14 +403,20 @@ def match(words, times):
     """
     assert all([type(w) == str for w in words]), 'words should be a list of strings'
     assert all([type(t) == list for t in times]), 'times should be a list of lists'
-    assert all([isinstance(i, (int, float)) for t in times for i in t]), 'times lists should contain numbers'
-    assert all([len(t) == len(words) for t in times]), 'There should be one word per time.'
+    assert all(
+        [isinstance(i, (int, float)) for t in times for i in t]
+    ), 'times lists should contain numbers'
+    assert all(
+        [len(t) == len(words) for t in times]
+    ), 'There should be one word per time.'
     return {"words": words, "times": times}
 
 
 def get_word(match, word_index):
     """A utility function that gets the word with index word_index"""
-    assert 0 <= word_index < len(get_all_words(match)), "word_index out of range of words"
+    assert (
+        0 <= word_index < len(get_all_words(match))
+    ), "word_index out of range of words"
     return get_all_words(match)[word_index]
 
 
@@ -313,9 +426,11 @@ def time(match, player_num, word_index):
     assert player_num < len(get_all_times(match)), "player_num out of range of players"
     return get_all_times(match)[player_num][word_index]
 
+
 def get_all_words(match):
     """A selector function for all the words in the match"""
     return match["words"]
+
 
 def get_all_times(match):
     """A selector function for all typing times for all players"""
@@ -325,6 +440,7 @@ def get_all_times(match):
 def match_string(match):
     """A helper function that takes in a match data abstraction and returns a string representation of it"""
     return f"match({get_all_words(match)}, {get_all_times(match)})"
+
 
 enable_multiplayer = False  # Change to True when you're ready to race.
 
@@ -372,6 +488,7 @@ def run_typing_test(topics):
 def run(*args):
     """Read in the command-line argument and calls corresponding functions."""
     import argparse
+
     parser = argparse.ArgumentParser(description="Typing Test")
     parser.add_argument('topic', help="Topic word", nargs='*')
     parser.add_argument('-t', help="Run typing test", action='store_true')
