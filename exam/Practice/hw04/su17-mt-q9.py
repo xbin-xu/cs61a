@@ -30,15 +30,13 @@ def count_ways(t, total):
     3
     """
 
-    def paths(__________________________________):
+    def paths(t, total, can_skip):
         ways = 0
-        if _____________________________________:
-            ____________________________________
-        ways += sum(
-            ____________________________________________________________________________
-        )
-        if _____________________________________:
-            ____________________________________________________________________________________
+        if label(t) == total:
+            ways += 1
+        ways += sum(paths(branch, total - label(t), False) for branch in branches(t))
+        if can_skip:
+            ways += sum(paths(branch, total, True) for branch in branches(t))
         return ways
 
-    return _____________________________________________________________________
+    return paths(t, total, True)

@@ -65,14 +65,15 @@ def exp_tree(values):
         2
         3
     """
-    if __________:  # (a)
-        return __________  # (b)
+    if len(values) == 1:  # (a)
+        return tree(values[0])  # (b)
     else:
 
         def tree_at_split(i):
-            base = exp_tree(__________)  # (c)
-            exponent = exp_tree(__________)  # (d)
-            return tree(__________, [base, exponent])  # (e)
-            trees = [tree_at_split(i) for i in range(1, len(values))]
+            base = exp_tree(values[:i])  # (c)
+            exponent = exp_tree(values[i:])  # (d)
+            return tree(label(base) ** label(exponent), [base, exponent])  # (e)
 
-        return max(trees, key=__________)  # (f)
+        trees = [tree_at_split(i) for i in range(1, len(values))]
+
+        return max(trees, key=lambda tree: label(tree))  # (f)

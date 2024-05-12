@@ -39,15 +39,17 @@ def max_path(t, k):
     """
 
     def helper(t, k, on_path):
-        if ______________________________________________________________________:
+        if k <= 0:
             return []
-        elif ____________________________________________________________________:
+        elif is_leaf(t):
             return [label(t)]
-        a = __________________________________________________________
-        if ______________________________________________________________________:
-            return ____________(___________________, key=_______________________)
+        a = [[label(t)] + helper(branch, k - 1, True) for branch in branches(t)]
+        if on_path:
+            return max(a, key=sum)
         else:
-            b = __________________________________________________________
-            return _____________(___________________, key=______________________)
+            b = [helper(branch, k, False) for branch in branches(t)]
+            return max(a + b, key=sum)
+            # b = a + [helper(branch, k, False) for branch in branches(t)]
+            # return max(b, key=sum)
 
     return helper(t, k, False)
