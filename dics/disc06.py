@@ -5,7 +5,10 @@ def gen_fib():
         yield n
         n, add = n + add, n
 
-____lambda n: n > 2024, ____
+
+# apply `filter` to list will return a result list that satify filiter func,
+# apply `filter` to generator will get a generator to yield each result(lazy computation)
+print(next(filter(lambda n: n > 2024, gen_fib())))
 
 
 # Q2: Something Different
@@ -18,6 +21,10 @@ def differences(t):
     61
     """
     "*** YOUR CODE HERE ***"
+    prev = next(t)
+    for cur in t:
+        yield cur - prev
+        prev = cur
 
 
 # Q3: Partitions
@@ -38,9 +45,13 @@ def partition_gen(n, m):
     """
     assert n > 0 and m > 0
     if n == m:
-        yield ____
+        yield str(n)
     if n - m > 0:
         "*** YOUR CODE HERE ***"
+        for t in partition_gen(n - m, m):
+            yield t + ' + ' + str(m)
     if m > 1:
         "*** YOUR CODE HERE ***"
-
+        # for t in partition_gen(n, m - 1):
+        #     yield t
+        yield from partition_gen(n, m - 1)
