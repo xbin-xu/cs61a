@@ -54,3 +54,25 @@ next(i)
 tony.extend(list(i))
 thanos = tony[2::-2]
 
+def test_ans():
+    """
+    >>> print(print('end', print('game')), x)
+    game
+    end None
+    None Iterator
+
+    >>> print(L)
+    [1000, 2000, 3000]
+
+    >>> try:
+    ...     next(x)
+    ... except StopIteration:
+    ...     print('Error')
+    Error
+
+    >>> print(tony)
+    ['mind', 'soul', 'time', 'soul', 'time']
+
+    >>> print(list(alternate(thanos[1:], thanos)))
+    ['mind', 'time', 'inevitable']
+    """

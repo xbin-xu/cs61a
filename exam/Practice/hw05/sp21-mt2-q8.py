@@ -111,3 +111,43 @@ def word_finder(letter_tree, words_list):
     ...     print("Expected a TypeError!")
     Got a TypeError!
     """
+
+    def word_catenate(t, words, word):
+        word += t.label # Optional
+        if t.is_leaf() and word in words:
+            yield word
+        for b in t.branches:
+            yield from word_catenate(b, words, word)
+    yield from word_catenate(letter_tree, words_list, '')
+
+
+# Tree Data Abstraction
+
+class Tree:
+    """A tree."""
+    def __init__(self, label, branches=[]):
+        self.label = label
+        for branch in branches:
+            assert isinstance(branch, Tree)
+        self.branches = list(branches)
+
+    def __repr__(self):
+        if self.branches:
+            branch_str = ', ' + repr(self.branches)
+        else:
+            branch_str = ''
+        return 'Tree({0}{1})'.format(self.label, branch_str)
+
+    def __str__(self):
+        return '\n'.join(self.indented())
+
+    def indented(self):
+        lines = []
+        for b in self.branches:
+            for line in b.indented():
+                lines.append('  ' + line)
+        return [str(self.label)] + lines
+
+    def is_leaf(self):
+        return not self.branches
+
