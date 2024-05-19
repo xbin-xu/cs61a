@@ -54,6 +54,7 @@ next(i)
 tony.extend(list(i))
 thanos = tony[2::-2]
 
+
 def test_ans():
     """
     >>> print(print('end', print('game')), x)

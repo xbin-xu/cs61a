@@ -6,4 +6,3 @@
 > + Reference Solution: [half-dreamer/CS61A-20fa](https://github.com/half-dreamer/CS61A-20fa)
 > + 61A Code: [61A Code](https://code.cs61a.org/) | [document](https://cs61a.org/articles/61a-code-docs/)
 > + 学习顺序：Text Book -> Lecture -> Q&A -> Disc/Lab/HW -> Project
-

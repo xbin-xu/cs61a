@@ -154,4 +154,3 @@ def deep_convert_to_tuple(sequence):
         return tuple(deep_convert_to_tuple(item) for item in sequence)
     else:
         return sequence
-

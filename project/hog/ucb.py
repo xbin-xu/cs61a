@@ -20,11 +20,14 @@ def main(fn):
     Use this instead of the typical __name__ == "__main__" predicate.
     """
     if inspect.stack()[1][0].f_locals['__name__'] == '__main__':
-        args = sys.argv[1:] # Discard the script name from command line
-        fn(*args) # Call the main function
+        args = sys.argv[1:]  # Discard the script name from command line
+        fn(*args)  # Call the main function
     return fn
 
+
 _PREFIX = ''
+
+
 def trace(fn):
     """A decorator that prints a function's name, its arguments, and its return
     values each time the function is called. For example,
@@ -33,6 +36,7 @@ def trace(fn):
     def compute_something(x, y):
         # function body
     """
+
     @functools.wraps(fn)
     def wrapped(*args, **kwds):
         global _PREFIX
@@ -50,6 +54,7 @@ def trace(fn):
         # Here, print out the return value.
         log('{0}({1}) -> {2}'.format(fn.__name__, ', '.join(reprs), result))
         return result
+
     return wrapped
 
 
@@ -82,6 +87,7 @@ def interact(msg=None):
     def handler(signum, frame):
         print()
         exit(0)
+
     signal.signal(signal.SIGINT, handler)
 
     if not msg:

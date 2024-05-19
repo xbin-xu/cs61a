@@ -1,11 +1,11 @@
 test = {
-  'name': 'Comprehensions',
-  'points': 0,
-  'suites': [
-    {
-      'cases': [
+    'name': 'Comprehensions',
+    'points': 0,
+    'suites': [
         {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> [2 * x for x in range(4)]
           [0, 2, 4, 6]
           >>> [y for y in [6, 1, 6, 1] if y > 2]
@@ -15,13 +15,13 @@ test = {
           >>> [z + 1 for z in range(10) if z % 3 == 0]
           [1, 4, 7, 10]
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                }
+            ],
+            'scored': False,
+            'type': 'wwpp',
         }
-      ],
-      'scored': False,
-      'type': 'wwpp'
-    }
-  ]
+    ],
 }

@@ -2,6 +2,7 @@
 
 import random
 
+
 class Card:
     cardtype = 'Staff'
 
@@ -42,7 +43,6 @@ class Card:
         """
         "*** YOUR CODE HERE ***"
 
-
     def effect(self, opponent_card, player, opponent):
         """
         Cards have no default effect.
@@ -55,13 +55,16 @@ class Card:
         a card, in the form:
         <cardname>: <cardtype>, [<attack>, <defense>]
         """
-        return '{}: {}, [{}, {}]'.format(self.name, self.cardtype, self.attack, self.defense)
+        return '{}: {}, [{}, {}]'.format(
+            self.name, self.cardtype, self.attack, self.defense
+        )
 
     def copy(self):
         """
         Returns a copy of this card.
         """
         return Card(self.name, self.attack, self.defense)
+
 
 class Player:
     def __init__(self, deck, name):
@@ -110,14 +113,15 @@ class Player:
         """
         "*** YOUR CODE HERE ***"
 
-
     def display_hand(self):
         """
         Display the player's current hand to the user.
         """
         print('Your hand:')
-        for card_index, displayed_card in zip(range(len(self.hand)),[str(card) for card in self.hand]):
-            indent = ' '*(5 - len(str(card_index)))
+        for card_index, displayed_card in zip(
+            range(len(self.hand)), [str(card) for card in self.hand]
+        ):
+            indent = ' ' * (5 - len(str(card_index)))
             print(card_index, indent + displayed_card)
 
     def play_random(self):
@@ -126,9 +130,11 @@ class Player:
         """
         return self.play(random.randrange(len(self.hand)))
 
+
 ######################
 # Optional Questions #
 ######################
+
 
 class AICard(Card):
     cardtype = 'AI'
@@ -164,6 +170,7 @@ class AICard(Card):
         Create a copy of this card.
         """
         return AICard(self.name, self.attack, self.defense)
+
 
 class TutorCard(Card):
     cardtype = 'Tutor'
@@ -203,12 +210,12 @@ class TutorCard(Card):
 
     "*** YOUR CODE HERE ***"
 
-
     def copy(self):
         """
         Create a copy of this card.
         """
         return TutorCard(self.name, self.attack, self.defense)
+
 
 class TACard(Card):
     cardtype = 'TA'
@@ -239,14 +246,16 @@ class TACard(Card):
         best_card = None
         # You should add your implementation above this.
         if best_card:
-            print(f"{self.name} discards {best_card.name} from my hand to increase its own power!")
-
+            print(
+                f"{self.name} discards {best_card.name} from my hand to increase its own power!"
+            )
 
     def copy(self):
         """
         Create a copy of this card.
         """
         return TACard(self.name, self.attack, self.defense)
+
 
 class InstructorCard(Card):
     cardtype = 'Instructor'
@@ -288,6 +297,7 @@ class InstructorCard(Card):
 # Do not edit anything below this line #
 ########################################
 
+
 class Deck:
     def __init__(self, cards):
         """
@@ -314,6 +324,7 @@ class Deck:
         Create a copy of this deck.
         """
         return Deck([card.copy() for card in self.cards])
+
 
 class Game:
     win_score = 8

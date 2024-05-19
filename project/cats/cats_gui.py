@@ -1,4 +1,5 @@
 """Web server for the typing GUI."""
+
 import base64
 import os
 import random

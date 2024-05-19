@@ -1,11 +1,11 @@
 test = {
-  'name': 'Iterators',
-  'points': 0,
-  'suites': [
-    {
-      'cases': [
+    'name': 'Iterators',
+    'points': 0,
+    'suites': [
         {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> # Enter StopIteration if StopIteration exception occurs, Error for other errors
           >>> # Enter Iterator if the output is an iterator object.
           >>> s = [1, 2, 3, 4]
@@ -25,12 +25,12 @@ test = {
           >>> next(t)
           4
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
-        },
-        {
-          'code': r"""
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                },
+                {
+                    'code': r"""
           >>> r = range(6)
           >>> r_iter = iter(r)
           >>> next(r_iter)
@@ -42,12 +42,12 @@ test = {
           >>> next(r_iter)
           StopIteration
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
-        },
-        {
-          'code': r"""
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                },
+                {
+                    'code': r"""
           >>> map_iter = map(lambda x : x + 10, range(5))
           >>> next(map_iter)
           10
@@ -62,13 +62,13 @@ test = {
           >>> [x + y for x, y in zip([1, 2, 3], [4, 5, 6])]
           [5, 7, 9]
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                },
+            ],
+            'scored': False,
+            'type': 'wwpp',
         }
-      ],
-      'scored': False,
-      'type': 'wwpp'
-    }
-  ]
+    ],
 }

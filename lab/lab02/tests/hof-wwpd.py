@@ -1,11 +1,11 @@
 test = {
-  'name': 'Higher Order Functions',
-  'points': 0,
-  'suites': [
-    {
-      'cases': [
+    'name': 'Higher Order Functions',
+    'points': 0,
+    'suites': [
         {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> # If Python displays <function...>, type Function, if it errors type Error, if it displays nothing type Nothing
           >>> def cake():
           ...    print('beets')
@@ -24,7 +24,7 @@ test = {
           sweets
           >>> more_chocolate
           'cake'
-          >>> # Reminder: cake, more_cake, and chocolate were defined/assigned in the code above! 
+          >>> # Reminder: cake, more_cake, and chocolate were defined/assigned in the code above!
           >>> # It might be helpful to refer to their definitions on the assignment website so you don't have to scroll as much!
           >>> def snake(x, y):
           ...    if cake == more_cake:
@@ -40,13 +40,13 @@ test = {
           >>> snake(10, 20)
           30
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                }
+            ],
+            'scored': False,
+            'type': 'wwpp',
         }
-      ],
-      'scored': False,
-      'type': 'wwpp'
-    }
-  ]
+    ],
 }

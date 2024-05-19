@@ -10,6 +10,7 @@ except ImportError:
 # Parsing #
 ###########
 
+
 def card_parse(line, handsize):
     tokens = line.split()
     if not tokens:
@@ -24,67 +25,73 @@ def card_parse(line, handsize):
         raise SyntaxError('Invalid card number')
     return card_index
 
+
 def name_parse(line):
     if not line:
         raise SyntaxError('No command given')
     return line
 
+
 ########
 # REPL #
 ########
 
+
 def read_eval_print_loop():
-	while True:
-		try:
-			line = input('What is your name?> ')
-			name = name_parse(line)
-			break
-		except (KeyboardInterrupt, EOFError, SystemExit): # If you ctrl-c or ctrl-d
-			print('\nSee you next game!')
-			return
-		except SyntaxError as e:
-			print('ERROR:', e)
-	p1 = Player(player_deck, name)
-	p2 = Player(opponent_deck, 'Opponent')
-	print(WELCOME_MESSAGE)
-	duel = Game(p1, p2)
-	draw = True
-	while True:
-		if duel.game_won() == 1:
-			print(WIN_MESSAGE)
-			return
-		elif duel.game_won() == 2:
-			print(LOSE_MESSAGE)
-			return
-		print()
-		try:
-			if draw:
-				p1.draw()
-				p2.draw()
-			else:
-				draw = True
-			p1.display_hand()
-			print('Please enter the number next to the card you would like to play this round.')
-			line = input('card> ')
-			card_index = card_parse(line, len(p1.hand))
-			duel.play_round(p1.play(card_index), p2.play_random())
-			duel.display_scores()
-		except (KeyboardInterrupt, EOFError, SystemExit): # If you ctrl-c or ctrl-d
-			print('\nGood game. Bye!')
-			return
-		except AssertionError: # Deck out
-			if p1.deck.is_empty() and p2.deck.is_empty():
-				print(TIE_MESSAGE)
-				return
-			elif p1.deck.is_empty():
-				print(PLAYER_DECKOUT_MESSAGE)
-				return
-			else:
-				print(OPPONENT_DECKOUT_MESSAGE)
-				return
-		except SyntaxError as e:
-			print('ERROR:', e)
-			draw = False
+    while True:
+        try:
+            line = input('What is your name?> ')
+            name = name_parse(line)
+            break
+        except (KeyboardInterrupt, EOFError, SystemExit):  # If you ctrl-c or ctrl-d
+            print('\nSee you next game!')
+            return
+        except SyntaxError as e:
+            print('ERROR:', e)
+    p1 = Player(player_deck, name)
+    p2 = Player(opponent_deck, 'Opponent')
+    print(WELCOME_MESSAGE)
+    duel = Game(p1, p2)
+    draw = True
+    while True:
+        if duel.game_won() == 1:
+            print(WIN_MESSAGE)
+            return
+        elif duel.game_won() == 2:
+            print(LOSE_MESSAGE)
+            return
+        print()
+        try:
+            if draw:
+                p1.draw()
+                p2.draw()
+            else:
+                draw = True
+            p1.display_hand()
+            print(
+                'Please enter the number next to the card you would like to play this round.'
+            )
+            line = input('card> ')
+            card_index = card_parse(line, len(p1.hand))
+            duel.play_round(p1.play(card_index), p2.play_random())
+            duel.display_scores()
+        except (KeyboardInterrupt, EOFError, SystemExit):  # If you ctrl-c or ctrl-d
+            print('\nGood game. Bye!')
+            return
+        except AssertionError:  # Deck out
+            if p1.deck.is_empty() and p2.deck.is_empty():
+                print(TIE_MESSAGE)
+                return
+            elif p1.deck.is_empty():
+                print(PLAYER_DECKOUT_MESSAGE)
+                return
+            else:
+                print(OPPONENT_DECKOUT_MESSAGE)
+                return
+        except SyntaxError as e:
+            print('ERROR:', e)
+            draw = False
+
 
 #################
 # Configuration #

@@ -1,53 +1,53 @@
 test = {
-  'name': 'Extra Credit',
-  'points': 1,
-  'suites': [
-      {
-      'cases': [
+    'name': 'Extra Credit',
+    'points': 1,
+    'suites': [
         {
-          'answer': 'A function that takes another function as an input and returns a new function that extends or modifies the behavior of the original function',
-          'choices': [
-            'A type of design pattern',
-            'A function that takes another function as an input and returns a new function that extends or modifies the behavior of the original function',
-            'A method for declaring class properties',
-            'A way to loop through an iterable'
-          ],
-          'hidden': False,
-          'multiline': False,
-          'question': 'What is a decorator in Python?'
+            'cases': [
+                {
+                    'answer': 'A function that takes another function as an input and returns a new function that extends or modifies the behavior of the original function',
+                    'choices': [
+                        'A type of design pattern',
+                        'A function that takes another function as an input and returns a new function that extends or modifies the behavior of the original function',
+                        'A method for declaring class properties',
+                        'A way to loop through an iterable',
+                    ],
+                    'hidden': False,
+                    'multiline': False,
+                    'question': 'What is a decorator in Python?',
+                },
+                {
+                    'answer': 'To add functionality to existing code',
+                    'choices': [
+                        'To add functionality to existing code',
+                        'To loop through arrays',
+                        'To declare variables',
+                        'To check for syntax errors in code',
+                    ],
+                    'hidden': False,
+                    'multiline': False,
+                    'question': 'Why do we use decorators in Python?',
+                },
+                {
+                    'answer': 'Using the "@decorator_name" syntax above the function definition',
+                    'choices': [
+                        'Using the "#" symbol before the function',
+                        'By passing the decorator as a parameter to the function',
+                        'Using the "@decorator_name" syntax above the function definition',
+                        'By importing the decorator from a library',
+                    ],
+                    'hidden': False,
+                    'multiline': False,
+                    'question': 'How is a decorator applied to a function?',
+                },
+            ],
+            'scored': False,
+            'type': 'concept',
         },
         {
-          'answer': 'To add functionality to existing code',
-          'choices': [
-            'To add functionality to existing code',
-            'To loop through arrays',
-            'To declare variables',
-            'To check for syntax errors in code'
-          ],
-          'hidden': False,
-          'multiline': False,
-          'question': 'Why do we use decorators in Python?'
-        },
-        {
-          'answer': 'Using the "@decorator_name" syntax above the function definition',
-          'choices': [
-            'Using the "#" symbol before the function',
-            'By passing the decorator as a parameter to the function',
-            'Using the "@decorator_name" syntax above the function definition',
-            'By importing the decorator from a library'
-          ],
-          'hidden': False,
-          'multiline': False,
-          'question': 'How is a decorator applied to a function?'
-        }
-      ],
-      'scored': False,
-      'type': 'concept'
-    },
-    {
-      'cases': [
-        {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> def my_decorator(func):
           ...   def wrapper():
           ...       print("Say Hello")
@@ -64,11 +64,11 @@ test = {
           Hello World
           Say Goodbye
           """,
-          'hidden': False,
-          'multiline': True
-        },
+                    'hidden': False,
+                    'multiline': True,
+                },
                 {
-          'code': r"""
+                    'code': r"""
           >>> def magic_decorator(func):
           ...   def wrapper(x):
           ...     return func(x * 2)
@@ -81,11 +81,11 @@ test = {
           >>> print(myfunc(4))
           24
           """,
-          'hidden': False,
-          'multiline': False
-        },
-        {
-          'code': r"""
+                    'hidden': False,
+                    'multiline': False,
+                },
+                {
+                    'code': r"""
           >>> big_limit = 10
           >>> minimum_mewtations.call_count = 0
           >>> minimum_mewtations("rlogcul", "logical", big_limit) # rlogcul -> logcul -> logicul -> logical
@@ -98,11 +98,11 @@ test = {
           >>> minimum_mewtations.call_count <= 320
           True
           """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
+                    'hidden': False,
+                    'locked': False,
+                },
+                {
+                    'code': r"""
           >>> # Check that you're only using the minimum_mewtations func.
           >>> import trace, io
           >>> from contextlib import redirect_stdout
@@ -114,11 +114,11 @@ test = {
           >>> func_names == {'counted', 'minimum_mewtations', 'memoized'}
           True
           """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
+                    'hidden': False,
+                    'locked': False,
+                },
+                {
+                    'code': r"""
           >>> minimum_mewtations.call_count = 0
           >>> autocorrect("woll", common_words, minimum_mewtations, 4)
           'well'
@@ -150,18 +150,18 @@ test = {
           >>> minimum_mewtations.call_count < 2700000
           True
           """,
-          'hidden': False,
-          'locked': False
-        }
-      ],
-      'scored': True,
-      'setup': r"""
+                    'hidden': False,
+                    'locked': False,
+                },
+            ],
+            'scored': True,
+            'setup': r"""
       >>> from cats import minimum_mewtations, feline_fixes, autocorrect, lines_from_file
       >>> all_words = lines_from_file("data/words.txt")
       >>> common_words = lines_from_file("data/common_words.txt")
       """,
-      'teardown': '',
-      'type': 'doctest'
-    }
-  ]
+            'teardown': '',
+            'type': 'doctest',
+        },
+    ],
 }

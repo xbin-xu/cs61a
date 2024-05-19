@@ -1,11 +1,11 @@
 test = {
-  'name': 'Dictionaries',
-  'points': 0,
-  'suites': [
-    {
-      'cases': [
+    'name': 'Dictionaries',
+    'points': 0,
+    'suites': [
         {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> pokemon = {'pikachu': 25, 'dragonair': 148, 'mew': 151}
           >>> pokemon['pikachu']
           25
@@ -24,13 +24,13 @@ test = {
           >>> 'mew' in pokemon.keys()
           True
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                }
+            ],
+            'scored': False,
+            'type': 'wwpp',
         }
-      ],
-      'scored': False,
-      'type': 'wwpp'
-    }
-  ]
+    ],
 }

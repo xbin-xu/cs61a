@@ -113,18 +113,21 @@ def word_finder(letter_tree, words_list):
     """
 
     def word_catenate(t, words, word):
-        word += t.label # Optional
+        word += t.label  # Optional
         if t.is_leaf() and word in words:
             yield word
         for b in t.branches:
             yield from word_catenate(b, words, word)
+
     yield from word_catenate(letter_tree, words_list, '')
 
 
 # Tree Data Abstraction
 
+
 class Tree:
     """A tree."""
+
     def __init__(self, label, branches=[]):
         self.label = label
         for branch in branches:
@@ -150,4 +153,3 @@ class Tree:
 
     def is_leaf(self):
         return not self.branches
-

@@ -1,4 +1,5 @@
 """Web server for the hog GUI."""
+
 import io
 import os
 import logging

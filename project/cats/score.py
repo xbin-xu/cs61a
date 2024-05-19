@@ -17,7 +17,12 @@ if __name__ == '__main__':
 
     correct_words = list(test_dict.keys())
     random.shuffle(correct_words)
-    correctly_corrected, incorrectly_corrected, not_corrected, trial_counter = 0, 0, 0, 0
+    correctly_corrected, incorrectly_corrected, not_corrected, trial_counter = (
+        0,
+        0,
+        0,
+        0,
+    )
     for correct in correct_words:
         elapsed_time = time.time() - start_time
         if elapsed_time > 45:
@@ -25,7 +30,9 @@ if __name__ == '__main__':
         typos = test_dict[correct]
         for_print = f"{correct}\n"
         for typo in typos:
-            guess = cats.autocorrect(typo, correct_words, cats.final_diff, cats.FINAL_DIFF_LIMIT)
+            guess = cats.autocorrect(
+                typo, correct_words, cats.final_diff, cats.FINAL_DIFF_LIMIT
+            )
             if guess == correct:
                 for_print += f"\tCorrect: ({typo} -> {guess})\n"
                 correctly_corrected += 1

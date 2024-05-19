@@ -1,11 +1,11 @@
 test = {
-  'name': 'Python Basics',
-  'points': 0,
-  'suites': [
-    {
-      'cases': [
+    'name': 'Python Basics',
+    'points': 0,
+    'suites': [
         {
-          'code': r"""
+            'cases': [
+                {
+                    'code': r"""
           >>> x = 20
           >>> x + 2
           22
@@ -18,13 +18,13 @@ test = {
           >>> y + x
           28
           """,
-          'hidden': False,
-          'locked': False,
-          'multiline': False
+                    'hidden': False,
+                    'locked': False,
+                    'multiline': False,
+                }
+            ],
+            'scored': False,
+            'type': 'wwpp',
         }
-      ],
-      'scored': False,
-      'type': 'wwpp'
-    }
-  ]
+    ],
 }
