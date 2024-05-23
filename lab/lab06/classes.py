@@ -10,6 +10,7 @@ class Card:
         """
         Create a Card object with a name, attack,
         and defense.
+
         >>> staff_member = Card('staff', 400, 300)
         >>> staff_member.name
         'staff'
@@ -24,11 +25,15 @@ class Card:
         500
         """
         "*** YOUR CODE HERE ***"
+        self.name = name
+        self.attack = attack
+        self.defense = defense
 
     def power(self, opponent_card):
         """
         Calculate power as:
         (player card's attack) - (opponent card's defense)
+
         >>> staff_member = Card('staff', 400, 300)
         >>> other_staff = Card('other', 300, 500)
         >>> staff_member.power(other_staff)
@@ -42,6 +47,7 @@ class Card:
         -100
         """
         "*** YOUR CODE HERE ***"
+        return self.attack - opponent_card.defense
 
     def effect(self, opponent_card, player, opponent):
         """
@@ -71,6 +77,7 @@ class Player:
         """Initialize a Player object.
         A Player starts the game by drawing 5 cards from their deck. Each turn,
         a Player draws another card from the deck and chooses one to play.
+
         >>> test_card = Card('test', 100, 100)
         >>> test_deck = Deck([test_card.copy() for _ in range(6)])
         >>> test_player = Player(test_deck, 'tester')
@@ -82,9 +89,14 @@ class Player:
         self.deck = deck
         self.name = name
         "*** YOUR CODE HERE ***"
+        self.hand = []
+        for _ in range(5):
+            assert not self.deck.is_empty(), 'Deck is empty!'
+            self.hand.append(self.deck.draw())
 
     def draw(self):
         """Draw a card from the player's deck and add it to their hand.
+
         >>> test_card = Card('test', 100, 100)
         >>> test_deck = Deck([test_card.copy() for _ in range(6)])
         >>> test_player = Player(test_deck, 'tester')
@@ -96,9 +108,11 @@ class Player:
         """
         assert not self.deck.is_empty(), 'Deck is empty!'
         "*** YOUR CODE HERE ***"
+        self.hand.append(self.deck.draw())
 
     def play(self, index):
         """Remove and return a card from the player's hand at the given INDEX.
+
         >>> from cards import *
         >>> test_player = Player(standard_deck, 'tester')
         >>> ta1, ta2 = TACard("ta_1", 300, 400), TACard("ta_2", 500, 600)
@@ -112,6 +126,7 @@ class Player:
         2
         """
         "*** YOUR CODE HERE ***"
+        return self.hand.pop(index)
 
     def display_hand(self):
         """
@@ -160,7 +175,10 @@ class AICard(Card):
         True
         """
         "*** YOUR CODE HERE ***"
-        implemented = False
+        implemented = True
+        for _ in range(2):
+            assert not player.deck.is_empty(), 'Deck is empty!'
+            player.hand.append(player.deck.draw())
         # You should add your implementation above this.
         if implemented:
             print(f"{self.name} allows me to draw two cards!")
@@ -204,11 +222,17 @@ class TutorCard(Card):
         """
         "*** YOUR CODE HERE ***"
         added = False
+        if len(player.hand):
+            added = True
+            player.hand.append(player.hand[0].copy())
         # You should add your implementation above this.
         if added:
             print(f"{self.name} allows me to add a copy of a card to my hand!")
 
     "*** YOUR CODE HERE ***"
+
+    def power(self, opponent_card):
+        return -float('inf')
 
     def copy(self):
         """
@@ -244,6 +268,20 @@ class TACard(Card):
         """
         "*** YOUR CODE HERE ***"
         best_card = None
+        if len(player.hand):
+            best_card_idx = 0
+            # for card in player.hand:
+            for idx in range(len(player.hand)):
+                card = player.hand[idx]
+                if (
+                    card.cardtype != 'Staff'
+                    or player.hand[best_card_idx].attack >= card.attack
+                ):
+                    continue
+                best_card_idx = idx
+            best_card = player.hand.pop(best_card_idx)
+            self.attack += best_card.attack
+            self.defense += best_card.defense
         # You should add your implementation above this.
         if best_card:
             print(
@@ -285,6 +323,11 @@ class InstructorCard(Card):
         """
         "*** YOUR CODE HERE ***"
         re_add = False
+        self.attack -= 1000
+        self.defense -= 1000
+        if self.attack >= 0 and self.defense >= 0:
+            re_add = True
+            player.hand.append(self)
         # You should add your implementation above this.
         if re_add:
             print(f"{self.name} returns to my hand!")
