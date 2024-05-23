@@ -8,7 +8,7 @@ def draw(hand, positions):
     >>> hand
     ['A', 'J', 9]
     """
-    return _____(_____([hand._____(i) for i in _____(_____(positions))]))
+    return list(reversed([hand.pop(i) for i in reversed(sorted(positions))]))
 
 
 # Q2: Keyboard
@@ -51,6 +51,10 @@ class Button:
         "Call output on letter (maybe uppercased), then return the button that was pressed."
         self.pressed += 1
         "*** YOUR CODE HERE ***"
+        self.output(
+            self.letter.upper() if self.caps_lock.pressed & 0x01 else self.letter
+        )
+        return self
 
 
 class Keyboard:
@@ -74,12 +78,21 @@ class Keyboard:
 
     def __init__(self):
         self.typed = []
-        self.keys = ...  # Try a dictionary comprehension!
+        # self.keys = {}  # Try a dictionary comprehension!
+        self.keys = {
+            c: Button(c, self.typed.append) for c in LOWERCASE_LETTERS
+        }  # Try a dictionary comprehension!
 
     def type(self, word):
         "Press the button for each letter in word."
         assert all([w in LOWERCASE_LETTERS for w in word]), 'word must be all lowercase'
         "*** YOUR CODE HERE ***"
+        # for w in word:
+        #     if w not in self.keys.keys():
+        #         self.keys[w] = Button(w, lambda c: self.typed.append(c))
+        #     self.keys[w].press()
+        for w in word:
+            self.keys[w].press()
 
 
 # Q3: Bear
@@ -129,6 +142,9 @@ class SleepyBear(Bear):
 
     "*** YOUR CODE HERE ***"
 
+    def next_eye(self):
+        return Eye(True)
+
 
 class WinkingBear(Bear):
     """A bear whose left eye is different from its right eye.
@@ -139,6 +155,10 @@ class WinkingBear(Bear):
 
     def __init__(self):
         "*** YOUR CODE HERE ***"
+        super().__init__()
+        self.eye_cnt = 0
 
     def next_eye(self):
         "*** YOUR CODE HERE ***"
+        self.eye_cnt += 1
+        return Eye(bool(self.eye_cnt & 0x01))
