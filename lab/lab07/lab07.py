@@ -41,6 +41,13 @@ class Account:
         assert self.balance > 0 and amount > 0 and self.interest > 0
         "*** YOUR CODE HERE ***"
 
+        def time_to_retire_helper(balance, interest):
+            if amount <= balance:
+                return 0
+            return time_to_retire_helper(balance + balance * interest, interest) + 1
+
+        return time_to_retire_helper(self.balance, self.interest)
+
 
 class FreeChecking(Account):
     """A bank account that charges for withdrawals, but the first two are free!
@@ -71,6 +78,15 @@ class FreeChecking(Account):
 
     "*** YOUR CODE HERE ***"
 
+    def __init__(self, account_holder):
+        super().__init__(account_holder)
+        self.withdraw_cnt = 0
+
+    def withdraw(self, amount):
+        self.withdraw_cnt += 1
+        fee = self.withdraw_fee if self.withdraw_cnt > self.free_withdrawals else 0
+        return super().withdraw(amount + fee)
+
 
 def duplicate_link(s, val):
     """Mutates s so that each element equal to val is followed by another val.
@@ -89,6 +105,13 @@ def duplicate_link(s, val):
     Link(1, Link(2, Link(2, Link(2, Link(2, Link(3))))))
     """
     "*** YOUR CODE HERE ***"
+    if s is Link.empty:
+        return
+    if s.first == val:
+        s.rest = Link(val, s.rest)
+        duplicate_link(s.rest.rest, val)
+    else:
+        duplicate_link(s.rest, val)
 
 
 class Link:
