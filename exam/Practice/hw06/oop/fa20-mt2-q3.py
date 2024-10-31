@@ -16,6 +16,8 @@ the string 'out of range' if i is not smaller than the length of s.
 same order as s.
 """
 
+from collections import Counter
+
 
 def most_common(s):
     """Return the most common element in non-empty list s. In case of a tie,
@@ -32,6 +34,13 @@ def most_common(s):
     >>> most_common([3, 7, 5, 5, 7, 7])
     7
     """
+    # counter = Counter(s)
+    # return max(counter, key=lambda x: (counter[x], -s.index(x)))
+
+    counter = {}
+    for val in s:
+        counter[val] = counter.get(val, 0) + 1
+    return max(counter, key=lambda x: (counter[x], -s.index(x)))
 
 
 class SparseList:
@@ -56,19 +65,19 @@ class SparseList:
     def __init__(self, s):
         assert s, 's cannot be empty'
         self.n = len(s)
-        self.common = most_common(_________)
-        self.others = {_________: _________ for i in range(_________) if _________}
+        self.common = most_common(s)
+        self.others = {i: s[i] for i in range(self.n) if s[i] != self.common}
 
     def item(self, i):
         """Return s[i] or 'out of range' if i is not smaller than the length of s."""
         assert i >= 0, 'index i must be non-negative'
-        if _________:
+        if i >= self.n:
             return 'out of range'
-        elif _________:
-            return _________
+        elif i in self.others.keys():
+            return self.others[i]
         else:
             return self.common
 
     def items(self):
         """Return a list with the same elements as s in the same order as s."""
-        return [_________ for i in _________]
+        return [self.item(i) for i in range(self.n)]

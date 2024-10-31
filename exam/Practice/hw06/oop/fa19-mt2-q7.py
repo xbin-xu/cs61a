@@ -37,7 +37,7 @@ class Version:
         self.previous, self.edit = previous, edit
 
     def __str__(self):
-        return ___________________________________________________________________________________
+        return self.edit.apply(self.previous.__str__())
 
 
 class Edit:
@@ -48,10 +48,10 @@ class Edit:
 class Insert(Edit):
     def apply(self, t):
         """Return a new string by inserting string c into t starting at position i."""
-        return ____________________________________________________________________________________
+        return t[: self.i] + self.c + t[self.i :]
 
 
 class Delete(Edit):
     def apply(self, t):
         """Return a new string by deleting c characters from t starting at position i."""
-        return ____________________________________________________________________________________
+        return t[: self.i] + t[self.i + self.c :]

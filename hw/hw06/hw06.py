@@ -1,5 +1,6 @@
 passphrase = '*** PASSPHRASE HERE ***'
 
+
 def midsem_survey(p):
     """
     You do not need to understand this code.
@@ -7,6 +8,7 @@ def midsem_survey(p):
     '3d9f1125b109b311959d068240016badb874603eab75302a445e1a50'
     """
     import hashlib
+
     return hashlib.sha224(p.encode('utf-8')).hexdigest()
 
 
@@ -47,6 +49,7 @@ class VendingMachine:
     >>> w.vend()
     'Here is your soda.'
     """
+
     "*** YOUR CODE HERE ***"
     def __init__(self, product, price):
         self.product = product
@@ -96,6 +99,20 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
+    lnk = Link.empty
+    while n != 0:
+        lnk = Link(n % 10, lnk)
+        n //= 10
+    return lnk
+
+    # if 0 <= n < 10:
+    #     return Link(n)
+    # lnk = store_digits(n // 10)
+    # tmp = lnk
+    # while tmp.rest is not Link.empty:
+    #     tmp = tmp.rest
+    # tmp.rest = Link(n % 10)
+    # return lnk
 
 
 def deep_map_mut(func, lnk):
@@ -118,6 +135,21 @@ def deep_map_mut(func, lnk):
     <9 <16> 25 36>
     """
     "*** YOUR CODE HERE ***"
+    # assert isinstance(lnk, Link)
+    while lnk is not Link.empty:
+        if isinstance(lnk.first, Link):
+            deep_map_mut(func, lnk.first)
+        else:
+            lnk.first = func(lnk.first)
+        lnk = lnk.rest
+
+    # if lnk is Link.empty:
+    #     return
+    # if isinstance(lnk.first, Link):
+    #     deep_map_mut(func, lnk.first)
+    # else:
+    #     lnk.first = func(lnk.first)
+    # deep_map_mut(func, lnk.rest)
 
 
 def two_list(vals, counts):
@@ -139,6 +171,18 @@ def two_list(vals, counts):
     Link(1, Link(1, Link(3, Link(3, Link(2)))))
     """
     "*** YOUR CODE HERE ***"
+    lnk = Link.empty
+    for val, count in zip(vals[::-1], counts[::-1]):
+        for _ in range(count):
+            lnk = Link(val, lnk)
+    return lnk
+
+    # if len(vals) == 0:
+    #     return Link.empty
+    # lnk = two_list(vals[1:], counts[1:])
+    # for _ in range(0, counts[0]):
+    #     lnk = Link(vals[0], lnk)
+    # return lnk
 
 
 class Link:
