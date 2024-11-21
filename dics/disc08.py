@@ -41,7 +41,13 @@ def strange_loop():
     True
     """
     "*** YOUR CODE HERE ***"
-    
+    s = Link(Link.empty)
+    s.first, s.rest = s, s
+    return s
+    # s = Link(6, Link(Link(1)))
+    # s.rest.first.rest = s
+    # return s
+
 
 # Q2: Sum Two Ways
 def sum_rec(s, k):
@@ -57,6 +63,10 @@ def sum_rec(s, k):
     """
     # Use a recursive call to sum_rec; don't call sum_iter
     "*** YOUR CODE HERE ***"
+    if s is Link.empty or k <= 0:
+        return 0
+    return sum_rec(s.rest, k - 1) + s.first
+
 
 def sum_iter(s, k):
     """Return the sum of the first k elements in s.
@@ -71,6 +81,12 @@ def sum_iter(s, k):
     """
     # Don't call sum_rec or sum_iter
     "*** YOUR CODE HERE ***"
+    sum = 0
+    while s is not Link.empty and k > 0:
+        sum += s.first
+        s = s.rest
+        k -= 1
+    return sum
 
 
 # Q3: Overlap
@@ -87,6 +103,24 @@ def overlap(s, t):
     3
     """
     "*** YOUR CODE HERE ***"
+    if s is Link.empty or t is Link.empty:
+        return 0
+    elif s.first < t.first:
+        return overlap(s.rest, t)
+    elif s.first > t.first:
+        return overlap(s, t.rest)
+    else:
+        return overlap(s.rest, t.rest) + 1
+
+    # cnt = 0
+    # while s is not Link.empty and t is not Link.empty:
+    #     if s.first < t.first:
+    #         s = s.rest
+    #     elif s.first > t.first:
+    #         t = t.rest
+    #     else:
+    #         s, t, cnt = s.rest, t.rest, cnt + 1
+    # return cnt
 
 
 # Q4: Decimal Expansion
@@ -127,4 +161,14 @@ def divide(n, d):
     assert n > 0 and n < d
     result = Link(0)  # The zero before the decimal point
     "*** YOUR CODE HERE ***"
+    zeros = Link(0)
+    zeros.rest = zeros
+    r, tail, r_dict = n % d, result, {}
+    r_dict[0] = zeros
+    while r not in r_dict:
+        r_dict[r] = tail
+        q, r = r * 10 // d, r * 10 % d
+        tail.rest = Link(q)
+        tail = tail.rest
+    tail.rest = r_dict[r].rest
     return result
