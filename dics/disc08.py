@@ -11,6 +11,7 @@ class Link:
     >>> print(s)
     <3 4 5>
     """
+
     empty = ()
 
     def __init__(self, first, rest=empty):
@@ -31,6 +32,7 @@ class Link:
             string += str(self.first) + ' '
             self = self.rest
         return string + str(self.first) + '>'
+
 
 # Q1: Strange Loop
 def strange_loop():
@@ -83,9 +85,7 @@ def sum_iter(s, k):
     "*** YOUR CODE HERE ***"
     sum = 0
     while s is not Link.empty and k > 0:
-        sum += s.first
-        s = s.rest
-        k -= 1
+        sum, s, k = sum + s.first, s.rest, k - 1
     return sum
 
 
@@ -161,14 +161,12 @@ def divide(n, d):
     assert n > 0 and n < d
     result = Link(0)  # The zero before the decimal point
     "*** YOUR CODE HERE ***"
-    zeros = Link(0)
-    zeros.rest = zeros
-    r, tail, r_dict = n % d, result, {}
-    r_dict[0] = zeros
-    while r not in r_dict:
-        r_dict[r] = tail
-        q, r = r * 10 // d, r * 10 % d
+    tail, cache = result, {}
+    while n not in cache:
+        q, r = n * 10 // d, n * 10 % d
         tail.rest = Link(q)
         tail = tail.rest
-    tail.rest = r_dict[r].rest
+        cache[n] = tail
+        n = r
+    tail.rest = cache[n]
     return result
