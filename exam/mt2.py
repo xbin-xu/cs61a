@@ -103,13 +103,14 @@ def cruel(summer):
 
 summer = Link(1, Link(2, Link(3, Link(4))))
 # 1.(a)
-print(it)
+print(it)  # <2 3 4 5 7>
 # 1.(b)
-print(off)
+print(off)  # <1 5 7>
 # 1.(c)
-print([x * x for x in cruel(summer)])
+print([x * x for x in cruel(summer)])  # [1, 9]
 # 1.(d) What is the order of growth of the time it takes to evaluate
 # shake(Link(1, Link(n))) in terms of n? [exponential/quadratic/linear/constant]
+# linear
 
 
 # 2. (6.0 points) Spin Cycle
@@ -119,15 +120,15 @@ follow. Do not add frames for calls to built-in functions (such as print).
 
 Global frame
     cycle -> func cycle(a) [parent=Global]
-    c -> 
-f1: cycle [parent=Global]
-    a -> 
-    f -> func f(rest) [parent=f1]
-    b -> 
-    Return Value -> None
-f2: f [parent=f1]
-    rest -> 
-    Return Value -> 
+    c -> [2, 3] <-------------------+
+f1: cycle [parent=Global]           |
+    a -> ---------------------------|-------+
+    f -> func f(rest) [parent=f1]   |       |
+    b -> [4, -----------------------+, 5]   |
+    Return Value -> None            |       |
+f2: f [parent=f1]                   |       |
+    rest -> [4, --------------------+]      |
+    Return Value -> [None] <----------------+
 """
 
 
@@ -139,13 +140,13 @@ def cycle(a):
     b = []
     a = f(b)
     b = b + [5]
-    print(a)
-    print(b)
+    print(a)  # [None]
+    print(b)  # [4, [2, 3], 5]
 
 
 c = [2, 3, 4]
 cycle(c)
-print(c)
+print(c)  # [2, 3]
 
 
 # 3. (8.0 points) Fearless
@@ -181,12 +182,13 @@ class Mic:
     Left Side - you belong with me.
     Right Side - YOU BELONG WITH ME.
     """
+
     def __init__(self):
-        self.speakers = _______
+        self.speakers = {"Front": Speaker(lambda s: s)}
 
     def sing(self, lyrics):
-        for k in self.speakers.keys(): # iterate over the keys of a dictionary
-        print(k, '-', _______.repeat(lyrics))
+        for k in self.speakers.keys():  # iterate over the keys of a dictionary
+            print(k, '-', self.speakers[k].repeat(lyrics))
 
 
 class Speaker:
@@ -194,10 +196,10 @@ class Speaker:
         self.transform = transform
 
     def connect(self, m, location):
-        _______
+        m.speakers[location] = self
 
     def repeat(self, s):
-        return _______
+        return self.transform(s)
 
 
 # 4. (29.0 points) Who’s counting?
@@ -232,7 +234,7 @@ def is_strip(s):
     True
     """
     assert type(s) == list
-    return _______ or s == list ( range ( _______ , _______ ))
+    return len(s) == 0 or s == list(range(s[0], s[0] + len(s)))
 
 
 """
@@ -267,12 +269,12 @@ def drip(s, t):
     """
     while s and t:
         if s[0] + 1 == t[0]:
-            s, t = _______ # The next element of the strip is in t
-        elif _______:
-            s = s[1:] # The next element of the strip is in s
+            s, t = t, s[1:]  # The next element of the strip is in t
+        elif len(s) >= 2 and s[0] + 1 == s[1]:
+            s = s[1:]  # The next element of the strip is in s
         else:
-            return _______
-    return _______
+            return False
+    return is_strip(s)
 
 
 """
@@ -294,14 +296,14 @@ def longest(s):
     """
     if len(s) == 0:
         return []
-    return max([longest_with_s0(s), _______ ], key= _______ )
+    return max([longest_with_s0(s), longest(s[1:])], key=len)
 
 
 def longest_with_s0(s):
     """Return the longest strip in s that starts with s[0]."""
-    result = _______
+    result = s[:1]
     for k in s[1:]:
-        if _______:
+        if k == result[-1] + 1:
             result.append(k)
     return result
 
@@ -326,11 +328,11 @@ def has_strip(t):
     False
     """
     if t.is_leaf():
-        return _______
+        return True
     for b in t.branches:
-        if _______:
+        if b.label == t.label + 1 and has_strip(b):
             return True
-    return _______
+    return False
 
 
 """
@@ -349,19 +351,18 @@ def strips(t):
     [[1, 2], [1, 2, 3, 4], [1, 2, 3]]
     """
     if t.is_leaf():
-        yield _______
+        yield [t.label]
     for b in t.branches:
-        if _______:
-            for s in _______:
-                yield _______
-
+        if b.label == t.label + 1:
+            for s in strips(b):
+                yield [t.label] + s
 
 """
 4.(e)  A+ question
 Fill in the blank of only_strips, which takes a Tree of integers t.
 It removes all nodes that are not on a strip path.
 A strip path is a path from the root to a leaf whose labels form a strip.
-You may use functions implemented earlier in this question. 
+You may use functions implemented earlier in this question.
 """
 
 
@@ -380,5 +381,8 @@ def only_strips(t):
     """Remove all nodes of Tree t that are not on a path from the root to a leaf
     whose labels form a strip. Assume has_strip(t) is True.
     """
-    t.branches = [b for b in t.branches if _______]
-
+    t.branches = [
+        b
+        for b in t.branches
+        if b.label == t.label + 1 and has_strip(b) and (only_strips(b) or True)
+    ]
