@@ -18,11 +18,11 @@
   ; repeating the values BEADS until the list has reached
   ; LENGTH. You can assume that LENGTH is greater than or equal to 1,
   ; and that there is at least one bead in BEADS.
-    (if __________
-      __________
-      (cons __________
-            (make-necklace __________
-                           __________))))
+    (if (= length 0)
+      nil
+      (cons (car beads)
+            (make-necklace (append (cdr beads) (list (car beads)))
+                           (- length 1)))))
 
 ; test for racket
 (expect (make-necklace '(~ *) 3) '(~ * ~))

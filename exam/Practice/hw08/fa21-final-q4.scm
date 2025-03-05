@@ -28,7 +28,7 @@
 (define (repeated-call operator operands)
   (if (null? operands)
     operator
-    (_________ _________ _________)))
+    (repeated-call (list operator (car operands)) (cdr operands))))
 
 ; test for racket
 (expect (repeated-call 'f '(2 3 4)) '(((f 2) 3) 4))
@@ -63,6 +63,7 @@
 ;;; (4 5 6)
 
 (define (curry num-args)
+  ; (lambda (f) (curry-helper num-args (lambda (s) (begin (newline) (display f) (newline) (display s) (newline) (apply f s))))))
   (lambda (f) (curry-helper num-args (lambda (s) (apply f s)))))
 
   ;;; curry-helper's argument g is a one-argument procedure that takes a list.
@@ -71,9 +72,28 @@
   ;;; (6 7)
 
   (define (curry-helper num-args g)
+    ;(display num-args) (newline)
+    ;(display g) (newline)
     (if (= num-args 0)
-      _________
-      (lambda (x) (curry-helper (- num-args 1) _________))))
+      (cond
+        ((not (list? g)) (g nil))
+        (else
+          (let ((operator (car g))
+                (operands (car (cdr g))))
+            ;(display operator) (newline)
+            ;(display operands) (newline)
+            (operator operands))))
+      (lambda (x) (curry-helper (- num-args 1)
+                                (cond
+                                  ((not (list? g)) (list g (list x)))
+                                  (else
+                                    (let ((operator (car g))
+                                          (operands (car (cdr g))))
+                                      (define new_operands (append operands (list x)))
+                                      ;(display operator) (newline)
+                                      ;(display operands) (newline)
+                                      ;(display new_operands) (newline)
+                                      (list operator new_operands))))))))
 
 ; test for racket
 (expect (((((curry 3) +) 4) 5) 6) 15)
@@ -118,9 +138,9 @@
   (if (number? s) s
     (let ((num-args (- (length s) 1)))
       (if (= num-args 1)
-        (_________ _________ (one-arg _________)))
-      (repeated-call (list _________ _________)
-                     (map _________ (cdr s)))))))
+        (list (car s) (one-arg (car (cdr s))))
+        (repeated-call (list (list 'curry num-args) (car s))
+                     (map one-arg (cdr s)))))))
 
 ; test for racket
 (expect (one-arg '(abs 3)) '(abs 3))
