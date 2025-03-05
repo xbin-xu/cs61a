@@ -16,20 +16,22 @@ def calc_eval(exp):
     3
     """
     if isinstance(exp, Pair):
-        operator = ____________  # UPDATE THIS FOR Q2
-        operands = ____________  # UPDATE THIS FOR Q2
+        operator = exp.first  # UPDATE THIS FOR Q2
+        operands = exp.rest  # UPDATE THIS FOR Q2
         if operator == 'and':  # and expressions
             return eval_and(operands)
         elif operator == 'define':  # define expressions
             return eval_define(operands)
         else:  # Call expressions
-            return calc_apply(___________, ___________)  # UPDATE THIS FOR Q2
+            return calc_apply(
+                calc_eval(operator), operands.map(calc_eval)
+            )  # UPDATE THIS FOR Q2
     elif exp in OPERATORS:  # Looking up procedures
         return OPERATORS[exp]
     elif isinstance(exp, int) or isinstance(exp, bool):  # Numbers and booleans
         return exp
-    elif _________________:  # CHANGE THIS CONDITION FOR Q4
-        return _________________  # UPDATE THIS FOR Q4
+    elif exp in bindings:  # CHANGE THIS CONDITION FOR Q4
+        return bindings[exp]  # UPDATE THIS FOR Q4
 
 
 def calc_apply(op, args):
@@ -54,8 +56,34 @@ def floor_div(args):
     3
     >>> calc_eval(Pair("//", Pair(100, Pair(Pair("+", Pair(2, Pair(3, nil))), nil))))
     20
+    >>> floor_div(Pair(100, Pair(Pair("+", Pair(2, Pair(3, nil))), nil)))
+    20
     """
     "*** YOUR CODE HERE ***"
+    assert isinstance(args, Pair) and len(args) >= 2
+
+    first, rest = args.first, args.rest
+    lhs = calc_eval(first)
+    # while rest != nil:
+    while isinstance(rest, Pair):
+        rhs = calc_eval(rest.first)
+        lhs = lhs // rhs
+        rest = rest.rest
+    return lhs
+
+    """
+    Can not the follor pass test
+    >>> floor_div(Pair(100, Pair(Pair("+", Pair(2, Pair(3, nil))), nil)))
+    20
+    """
+    # offical solution
+    # result = args.first
+    # divisors = args.rest
+    # while divisors != nil:
+    #     divisor = divisors.first
+    #     result //= divisor
+    #     divisors = divisors.rest
+    # return result
 
 
 scheme_t = True  # Scheme's #t
@@ -80,6 +108,28 @@ def eval_and(expressions):
     True
     """
     "*** YOUR CODE HERE ***"
+    # offical solution
+    curr, val = expressions, scheme_t
+    while curr is not nil:
+        val = calc_eval(curr.first)
+        if val is scheme_f:
+            return scheme_f
+        curr = curr.rest
+    return val
+
+    # assert isinstance(expressions, Pair) or expressions is nil
+    #
+    # if expressions is nil:
+    #     return scheme_t
+    #
+    # first, rest = expressions.first, expressions.rest
+    # val = calc_eval(first)
+    # while isinstance(rest, Pair):
+    #     if val is scheme_f:
+    #         return scheme_f
+    #     val = calc_eval(rest.first)
+    #     rest = rest.rest
+    # return val
 
 
 bindings = {}
@@ -101,6 +151,11 @@ def eval_define(expressions):
     2
     """
     "*** YOUR CODE HERE ***"
+    assert isinstance(expressions, Pair) and len(expressions) == 2
+
+    symbol, rest = expressions.first, expressions.rest
+    bindings[symbol] = calc_eval(rest.first)
+    return symbol
 
 
 OPERATORS = {
