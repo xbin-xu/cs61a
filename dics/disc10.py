@@ -44,8 +44,15 @@ def print_evals(expr):
     """
     if not isinstance(expr, Pair):
         "*** YOUR CODE HERE ***"
+        print(expr)
+        # if expr != nil:
+        #     print(expr)
     else:
         "*** YOUR CODE HERE ***"
+        print(expr)
+        while expr is not nil:
+            print_evals(expr.first)
+            expr = expr.rest
 
 
 class Pair:
