@@ -9,6 +9,7 @@ class Pair:
     >>> print(s.map(lambda x: x+4))
     (5 6)
     """
+
     def __init__(self, first, rest):
         self.first = first
         self.rest = rest
@@ -51,6 +52,7 @@ class Pair:
     def flatmap(self, fn):
         """Return a Scheme list after flatmapping Python function FN to SELF."""
         from scheme_builtins import scheme_append
+
         mapped = fn(self.first)
         if self.rest is nil or isinstance(self.rest, Pair):
             return scheme_append(mapped, self.rest.flatmap(fn))
@@ -76,7 +78,9 @@ class nil:
     def flatmap(self, fn):
         return self
 
-nil = nil() # Assignment hides the nil class; there is only one instance
+
+nil = nil()  # Assignment hides the nil class; there is only one instance
+
 
 def repl_str(val):
     """Should largely match str(val), except for booleans and undefined."""

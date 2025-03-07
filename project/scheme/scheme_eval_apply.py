@@ -10,7 +10,8 @@ import scheme_forms
 # Eval/Apply #
 ##############
 
-def scheme_eval(expr, env, _=None): # Optional third argument is ignored
+
+def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
     """Evaluate Scheme expression EXPR in Frame ENV.
 
     >>> expr = read_line('(+ 2 2)')
@@ -36,12 +37,13 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
         "*** YOUR CODE HERE ***"
         # END PROBLEM 3
 
+
 def scheme_apply(procedure, args, env):
     """Apply Scheme PROCEDURE to argument values ARGS (a Scheme list) in
     Frame ENV, the current environment."""
     validate_procedure(procedure)
     if not isinstance(env, Frame):
-       assert False, "Not a Frame: {}".format(env)
+        assert False, "Not a Frame: {}".format(env)
     if isinstance(procedure, BuiltinProcedure):
         # BEGIN PROBLEM 2
         "*** YOUR CODE HERE ***"
@@ -63,6 +65,7 @@ def scheme_apply(procedure, args, env):
     else:
         assert False, "Unexpected procedure: {}".format(procedure)
 
+
 def eval_all(expressions, env):
     """Evaluate each expression in the Scheme list EXPRESSIONS in
     Frame ENV (the current environment) and return the value of the last.
@@ -79,13 +82,16 @@ def eval_all(expressions, env):
     2
     """
     # BEGIN PROBLEM 6
-    return scheme_eval(expressions.first, env) # replace this with lines of your own code
+    return scheme_eval(
+        expressions.first, env
+    )  # replace this with lines of your own code
     # END PROBLEM 6
 
 
 ##################
 # Tail Recursion #
 ##################
+
 
 class Unevaluated:
     """An expression and an environment in which it is to be evaluated."""
@@ -94,6 +100,7 @@ class Unevaluated:
         """Expression EXPR to be evaluated in Frame ENV."""
         self.expr = expr
         self.env = env
+
 
 def complete_apply(procedure, args, env):
     """Apply procedure to args in env; ensure the result is not an Unevaluated."""
@@ -104,8 +111,10 @@ def complete_apply(procedure, args, env):
     else:
         return val
 
+
 def optimize_tail_calls(unoptimized_scheme_eval):
     """Return a properly tail recursive version of an eval function."""
+
     def optimized_eval(expr, env, tail=False):
         """Evaluate Scheme expression EXPR in Frame ENV. If TAIL,
         return an Unevaluated containing an expression for further evaluation.
@@ -117,19 +126,8 @@ def optimize_tail_calls(unoptimized_scheme_eval):
         # BEGIN OPTIONAL PROBLEM 1
         "*** YOUR CODE HERE ***"
         # END OPTIONAL PROBLEM 1
+
     return optimized_eval
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ################################################################
