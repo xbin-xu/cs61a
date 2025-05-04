@@ -122,9 +122,9 @@ def do_if_form(expressions, env):
     """
     validate_form(expressions, 2, 3)
     if is_scheme_true(scheme_eval(expressions.first, env)):
-        return scheme_eval(expressions.rest.first, env)
+        return scheme_eval(expressions.rest.first, env, True)
     elif len(expressions) == 3:
-        return scheme_eval(expressions.rest.rest.first, env)
+        return scheme_eval(expressions.rest.rest.first, env, True)
 
 
 def do_and_form(expressions, env):
@@ -146,9 +146,9 @@ def do_and_form(expressions, env):
     res = True
     while isinstance(expressions, Pair) and is_scheme_true(res):
         expression, expressions = expressions.first, expressions.rest
-        res = scheme_eval(expression, env)
-    if expressions is not nil and is_scheme_true(res):
-        ret = scheme_eval(expressions, env)
+        res = scheme_eval(expression, env, expressions is nil)
+    if expressions is not nil:
+        ret = scheme_eval(expressions, env, True)
     return res
     # END PROBLEM 12
 
@@ -172,9 +172,9 @@ def do_or_form(expressions, env):
     res = False
     while isinstance(expressions, Pair) and is_scheme_false(res):
         expression, expressions = expressions.first, expressions.rest
-        res = scheme_eval(expression, env)
-    if expressions is not nil and is_scheme_false(res):
-        ret = scheme_eval(expressions, env)
+        res = scheme_eval(expression, env, expressions is nil)
+    if expressions is not nil:
+        ret = scheme_eval(expressions, env, True)
     return res
     # END PROBLEM 12
 
@@ -200,7 +200,7 @@ def do_cond_form(expressions, env):
             if len(clause) == 1:
                 return test
             elif len(clause.rest) == 1:
-                return scheme_eval(clause.rest.first, env)
+                return scheme_eval(clause.rest.first, env, True)
             else:
                 return eval_all(clause.rest, env)
             # END PROBLEM 13
