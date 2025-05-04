@@ -14,14 +14,14 @@
 
 (define (fit total n) (__fit total n 1))
 ;;;; Official Solution
-;(define (fit total n)
-;  (define (f total n k)
-;    (if (and (= n 0) (= total 0))
-;      #t
-;      (if (< total (* k k))
-;        #f
-;        (or (f total n (+ k 1)) (f (- total (* k k)) (- n 1) (+ k 1))))))
-;    (f total n 1))
+; (define (fit total n)
+;   (define (f total n k)
+;     (if (and (= n 0) (= total 0))
+;       #t
+;       (if (< total (* k k))
+;         #f
+;         (or (f total n (+ k 1)) (f (- total (* k k)) (- n 1) (+ k 1))))))
+;   (f total n 1))
 
 ;;; Tests
 (expect (fit 10 2) #t) ; 1*1 + 3*3
@@ -52,13 +52,13 @@
 
 ; Q3: Pair Up
 ;;; Return a list of pairs containing the elements of s.
-;(define (pair-up s)
-;  (cond
-;    ((null? s) (list s))
-;    ((null? (cdr s)) (list s))
-;    ((null? (cdr (cdr s))) (list s))
-;    ((null? (cdr (cdr (cdr s)))) (list s))
-;    (else (cons (list (car s) (car (cdr s))) (pair-up (cdr (cdr s)))))))
+; (define (pair-up s)
+;   (cond
+;     ((null? s) (list s))
+;     ((null? (cdr s)) (list s))
+;     ((null? (cdr (cdr s))) (list s))
+;     ((null? (cdr (cdr (cdr s)))) (list s))
+;     (else (cons (list (car s) (car (cdr s))) (pair-up (cdr (cdr s)))))))
 ;;; Official Solution
 (define (pair-up s)
   (cond

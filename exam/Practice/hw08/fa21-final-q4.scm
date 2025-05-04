@@ -35,9 +35,9 @@
 (expect (repeated-call '(f 2) '(3 4)) '(((f 2) 3) 4))
 (expect (repeated-call 'f nil) 'f)
 ; test for cs61a scheme
-;(expect (repeated-call 'f '(2 3 4)) (((f 2) 3) 4))
-;(expect (repeated-call '(f 2) '(3 4)) (((f 2) 3) 4))
-;(expect (repeated-call 'f nil) f)
+; (expect (repeated-call 'f '(2 3 4)) (((f 2) 3) 4))
+; (expect (repeated-call '(f 2) '(3 4)) (((f 2) 3) 4))
+; (expect (repeated-call 'f nil) f)
 
 ;; (b) (4.0 points)
 ; Complete the implementation of curry, a higher-order procedure that is
@@ -63,37 +63,41 @@
 ;;; (4 5 6)
 
 (define (curry num-args)
-  ; (lambda (f) (curry-helper num-args (lambda (s) (begin (newline) (display f) (newline) (display s) (newline) (apply f s))))))
-  (lambda (f) (curry-helper num-args (lambda (s) (apply f s)))))
+  (lambda (f)
+    (curry-helper num-args
+                  (lambda (s)
+                    ; (displayln f)
+                    ; (displayln s)
+                    (apply f s)))))
 
-  ;;; curry-helper's argument g is a one-argument procedure that takes a list.
-  ;;;
-  ;;; scm> ((((curry-helper 3 cdr) 5) 6) 7) ; (cdr '(5 6 7)) => (6 7)
-  ;;; (6 7)
+;;; curry-helper's argument g is a one-argument procedure that takes a list.
+;;;
+;;; scm> ((((curry-helper 3 cdr) 5) 6) 7) ; (cdr '(5 6 7)) => (6 7)
+;;; (6 7)
 
-  (define (curry-helper num-args g)
-    ;(display num-args) (newline)
-    ;(display g) (newline)
-    (if (= num-args 0)
-      (cond
-        ((not (list? g)) (g nil))
-        (else
-          (let ((operator (car g))
-                (operands (car (cdr g))))
-            ;(display operator) (newline)
-            ;(display operands) (newline)
-            (operator operands))))
-      (lambda (x) (curry-helper (- num-args 1)
-                                (cond
-                                  ((not (list? g)) (list g (list x)))
-                                  (else
-                                    (let ((operator (car g))
-                                          (operands (car (cdr g))))
-                                      (define new_operands (append operands (list x)))
-                                      ;(display operator) (newline)
-                                      ;(display operands) (newline)
-                                      ;(display new_operands) (newline)
-                                      (list operator new_operands))))))))
+(define (curry-helper num-args g)
+  ; (displayln num-args)
+  ; (displayln g)
+  (if (= num-args 0)
+    (cond
+      ((not (list? g)) (g nil))
+      (else
+        (let ((operator (car g))
+              (operands (car (cdr g))))
+          ; (displayln operator)
+          ; (displayln operands)
+          (operator operands))))
+    (lambda (x) (curry-helper (- num-args 1)
+                              (cond
+                                ((not (list? g)) (list g (list x)))
+                                (else
+                                  (let ((operator (car g))
+                                        (operands (car (cdr g))))
+                                    (define new_operands (append operands (list x)))
+                                    ; (displayln operator)
+                                    ; (displayln operands)
+                                    ; (displayln new_operands)
+                                    (list operator new_operands))))))))
 
 ; test for racket
 (expect (((((curry 3) +) 4) 5) 6) 15)
@@ -102,11 +106,11 @@
 (expect (((((curry 3) list) 4) 5) 6) '(4 5 6))
 (expect ((((curry-helper 3 cdr) 5) 6) 7) '(6 7))
 ; test for cs61a scheme
-;(expect (((((curry 3) +) 4) 5) 6) 15)
-;(expect ((curry 0) +) 0)
-;(expect (((curry 1) +) 3) 3)
-;(expect (((((curry 3) list) 4) 5) 6) (4 5 6))
-;(expect ((((curry-helper 3 cdr) 5) 6) 7) (6 7))
+; (expect (((((curry 3) +) 4) 5) 6) 15)
+; (expect ((curry 0) +) 0)
+; (expect (((curry 1) +) 3) 3)
+; (expect (((((curry 3) list) 4) 5) 6) (4 5 6))
+; (expect ((((curry-helper 3 cdr) 5) 6) 7) (6 7))
 
 ;; (c) (7.0 points)
 ; Implement one-arg, which takes a Scheme expression s.
@@ -140,7 +144,7 @@
       (if (= num-args 1)
         (list (car s) (one-arg (car (cdr s))))
         (repeated-call (list (list 'curry num-args) (car s))
-                     (map one-arg (cdr s)))))))
+                       (map one-arg (cdr s)))))))
 
 ; test for racket
 (expect (one-arg '(abs 3)) '(abs 3))
@@ -148,7 +152,7 @@
 (expect (eval (one-arg '(+ 4 5 6))) 15)
 (expect (one-arg '(+ (- 4) (*) (* 5 6))) '(((((curry 3) +) (- 4)) ((curry 0) *)) ((((curry 2) *) 5) 6)))
 ; test for cs61a scheme
-;(expect (one-arg '(abs 3)) (abs 3))
-;(expect (one-arg '(+ 4 5 6)) (((((curry 3) +) 4) 5) 6))
-;(expect (eval (one-arg '(+ 4 5 6))) 15)
-;(expect (one-arg '(+ (- 4) (*) (* 5 6))) (((((curry 3) +) (- 4)) ((curry 0) *)) ((((curry 2) *) 5) 6)))
+; (expect (one-arg '(abs 3)) (abs 3))
+; (expect (one-arg '(+ 4 5 6)) (((((curry 3) +) 4) 5) 6))
+; (expect (eval (one-arg '(+ 4 5 6))) 15)
+; (expect (one-arg '(+ (- 4) (*) (* 5 6))) (((((curry 3) +) (- 4)) ((curry 0) *)) ((((curry 2) *) 5) 6)))
