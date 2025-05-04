@@ -49,11 +49,13 @@
   (cond ((atom? expr)
          ; BEGIN OPTIONAL PROBLEM 2
          'replace-this-line
+         expr
          ; END OPTIONAL PROBLEM 2
          )
         ((quoted? expr)
          ; BEGIN OPTIONAL PROBLEM 2
          'replace-this-line
+         expr
          ; END OPTIONAL PROBLEM 2
          )
         ((or (lambda? expr)
@@ -63,6 +65,7 @@
                (body   (cddr expr)))
            ; BEGIN OPTIONAL PROBLEM 2
            'replace-this-line
+           (append (list form params) (map let-to-lambda body))
            ; END OPTIONAL PROBLEM 2
            ))
         ((let? expr)
@@ -70,15 +73,27 @@
                (body   (cddr expr)))
            ; BEGIN OPTIONAL PROBLEM 2
            'replace-this-line
+           (define lambda_formals (zip values))
+           (define formals (car lambda_formals))
+           (define vals (map let-to-lambda (cadr lambda_formals)))
+           (define body (map let-to-lambda body))
+           (cons (append (list 'lambda formals) body) vals)
            ; END OPTIONAL PROBLEM 2
            ))
         (else
          ; BEGIN OPTIONAL PROBLEM 2
          'replace-this-line
+         (map let-to-lambda expr)
          ; END OPTIONAL PROBLEM 2
          )))
 
 ; Some utility functions that you may find useful to implement for let-to-lambda
 
 (define (zip pairs)
-  'replace-this-line)
+  (cond
+    ((null? pairs) (list nil nil))
+    ((null? (cdr pairs)) (list (list (caar pairs)) (list (car (cdar pairs)))))
+    (else
+      (let ((pair (car pairs))
+            (res (zip (cdr pairs))))
+      (list (cons (car pair) (car res)) (cons (cadr pair) (cadr res)))))))
