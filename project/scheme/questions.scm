@@ -8,6 +8,11 @@
 (define (enumerate s)
   ; BEGIN PROBLEM 15
   'replace-this-line
+  (define (enumerate_helper s idx)
+    (cond
+      ((null? s) nil)
+      (else (cons (list idx (car s)) (enumerate_helper (cdr s) (+ idx 1))))))
+  (enumerate_helper s 0)
   )
   ; END PROBLEM 15
 
@@ -18,6 +23,13 @@
 (define (merge ordered? s1 s2)
   ; BEGIN PROBLEM 16
   'replace-this-line
+  (cond
+    ((null? s1) s2)
+    ((null? s2) s1)
+    (else
+      (if (ordered? (car s1) (car s2))
+        (cons (car s1) (merge ordered? (cdr s1) s2))
+        (cons (car s2) (merge ordered? s1 (cdr s2))))))
   )
   ; END PROBLEM 16
 

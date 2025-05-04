@@ -788,4 +788,3 @@ def tscheme_write_to_file(path):
 def scheme_print_return(val1, val2):
     print(repl_str(val1))
     return val2
-
