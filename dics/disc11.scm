@@ -48,7 +48,7 @@
 (define-macro (assign sym1 sym2 expr1 expr2)
   `(begin
      (define ,sym1 ,expr1)
-     (define ___ ___)))
+     (define ,sym2 ',(eval expr2))))
 
 ;;; Tests
 (assign x y (+ 1 1) 3)
@@ -85,8 +85,10 @@
 (define-macro (switch expr cases)
   `(let ((val ,expr))
      ,(cons
-        'YOUR-CODE-HERE
-        (map (lambda (case) (cons
-                              'YOUR-CODE-HERE
-                              (cdr case)))
+        'cond
+        (map (lambda (case)
+               ; (displayln 'ret: (cons `(equal? val ,(car case)) (cdr case)))
+               (cons `(equal? val ,(car case)) (cdr case)))
              cases))))
+
+(switch (+ 1 1) ((1 (print 'a)) (2 (print 'b)) (3 (print 'c))))
