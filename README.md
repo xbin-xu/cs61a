@@ -10,3 +10,5 @@
 ~~由于现在无法访问 CS 61A 的往期课程，`disc07/lab06/hw06/ants` 及之前的内容为 sp24，后续内容待定~~
 
 Scheme 尾递归优化：参考 [Scheme 尾递归优化实现](https://github.com/ZonePG/cs-notes/blob/main/CS61A/CS61A-tail-recursion.md)
+
+disc11.scm 来自 sp25(sp24 没有 macro 的 disc)
