@@ -13,7 +13,9 @@
 ;;
 ;; ((partial (append '(1 2))) '(3 4)) -> (1 2 3 4)
 (define-macro (partial call)
-  `(lambda (y) _________________________________________________________________________ ))
+  ; `(lambda (y) ,(append call '(y))))
+  ; Official Solution
+  `(lambda (y) ,(append call (list 'y))))
 
 (define add-two (partial (+ 1 1)))
 (expect (add-two 3) 5)
