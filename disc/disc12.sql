@@ -25,7 +25,10 @@ CREATE TABLE code AS
 
 -- Join the original and code tables and make sure that the joined roles have
 -- the same word and x.
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+SELECT y
+    FROM original, code
+    WHERE word = x
+    ORDER by n;
 
 
 -- What happens now? Write another select statement to decode this encrypted
@@ -51,5 +54,8 @@ CREATE TABLE code AS
 -- Join original with code AS a and code AS b to create six-column rows
 -- like: 2|The|The|Happens|Happens|Go,
 -- The Go at the end is part of the decoded message.
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+SELECT b.y
+    FROM original, code AS a, code AS b
+    WHERE word = a.x AND a.y = b.x
+    ORDER by n;
 

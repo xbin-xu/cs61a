@@ -59,12 +59,15 @@ def word_rope(s):
     """
     assert s and s[0] != ' ' and s[-1] != []
     result = []
-    word = _____
+    word = result
     for x in s:
         if x == ' ':
             "*** YOUR CODE HERE ***"
+            word.append([])
+            word = word[-1]
         else:
             "*** YOUR CODE HERE ***"
+            word.append(x)
     return result
 
 
@@ -103,9 +106,9 @@ def linear(s):
     def complete(first, rest):
         "The longest linear sublist of Link(first, rest) with difference d."
         if rest is Link.empty:
-            return ____
-        elif ____ == d:
-            return Link(____, complete(____, ____))
+            return Link(first)
+        elif rest.first - first == d:
+            return Link(first, complete(rest.first, rest.rest))
         else:
             return complete(first, rest.rest)
 
@@ -117,7 +120,7 @@ def linear(s):
         t = s.rest
         while t is not Link.empty:
             d = t.first - s.first
-            candidate = ____
+            candidate = Link(s.first, complete(t.first, t.rest))
             if length(candidate) > length(longest):
                 longest = candidate
             t = t.rest
