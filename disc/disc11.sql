@@ -31,7 +31,11 @@ CREATE TABLE meals AS
 -- | Artichoke |
 -- +-----------+
 -- Pizza places that open before 1pm in alphabetical order
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+CREATE TABLE opening AS
+  SELECT name
+    FROM pizzas
+    WHERE open < 13
+    ORDER BY name DESC;
 
 
 -- Q2: Study Session
@@ -54,7 +58,10 @@ SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
 -- | Cheeseboard | 0        |
 -- +-------------+----------+
 -- Pizza places and the duration of a study break that ends at 14 o'clock
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+CREATE TABLE study AS
+  SELECT name, MAX(14 - open, 0) AS duration
+    FROM pizzas
+    ORDER BY duration DESC;
 
 -- Q3: Late Night Snack
 -- What's still open for a late night snack? Create a late table with one
@@ -71,9 +78,10 @@ SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
 -- | La Val's closes at 22    | 
 -- +--------------------------+
 -- Pizza places that are open for late-night-snack time and when they close
-SELECT ____ || " closes at " || ____ AS status
-    FROM ____
-    WHERE ____;
+CREATE TABLE late AS
+  SELECT name || " closes at " || close AS status
+    FROM pizzas, meals
+    WHERE meals="snack" AND close >= time;
 
 
 -- Q4: Double Pizza
@@ -94,6 +102,9 @@ SELECT ____ || " closes at " || ____ AS status
 -- | lunch     | snack  | La Val's |
 -- +-----------+--------+----------+
 -- Two meals at the same place
-SELECT ____ AS first, ____ AS second, name
-    FROM ____, ____, pizzas
-    WHERE ____;
+CREATE TABLE double AS
+  SELECT a.meal AS first, b.meal AS second, name
+    FROM meals AS a, meals AS b, pizzas
+    WHERE b.time - a.time > 6 AND
+      open <= a.time AND
+      close <= b.time;
