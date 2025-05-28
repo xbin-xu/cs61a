@@ -33,8 +33,8 @@ CREATE TABLE players AS
 -- | 1 |
 -- | 4 |
 -- +---+
-SELECT _____________________________ FROM _________________________________________________
-    GROUP BY quarter ________________________________________________________________________;
+SELECT quarter FROM scoring
+    GROUP BY quarter HAVING SUM(points) > 10;
 
 
 -- (b) (3 pt) Complete the SQL statement below to select a two-column table of
@@ -43,5 +43,5 @@ SELECT _____________________________ FROM ______________________________________
 -- | Cal      | 24 |
 -- | Stanford | 20 |
 -- +----------+----+
-SELECT _________________ , __________________ FROM ________________________________________
-    WHERE ___________________________________________________________________________________;
+SELECT team, SUM(points) FROM scoring, players
+    WHERE player = name GROUP BY team;

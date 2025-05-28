@@ -30,7 +30,7 @@ CREATE TABLE shops AS
 -- | broth  | 3 |
 -- | onions | 2 |
 -- +--------+---+
-SELECT food, _________________ FROM shops ________________________;
+SELECT food, MIN(price) FROM shops GROUP BY food;
 
 
 -- (b) (4 pt) Select a two-column table with one row per dish that describes
@@ -40,8 +40,11 @@ SELECT food, _________________ FROM shops ________________________;
 -- | chili | 5 |
 -- | soup  | 6 |
 -- +-------+---+
-SELECT ________________________ FROM _____________________________
-    WHERE __________________________________________________________;
+-- SELECT dish, SUM(price) AS cost FROM ingredients, shops
+--     WHERE part = food AND shop = "A" GROUP BY dish ORDER BY cost;
+-- Official Solution
+SELECT dish, SUM(price) FROM ingredients, shops
+    WHERE part = food AND shop = "A" GROUP BY dish ORDER BY dish;
 
 
 -- (c) (4 pt) In two different ways, select a one-column table of all foods
@@ -50,6 +53,10 @@ SELECT ________________________ FROM _____________________________
 -- | onions |
 -- | broth  |
 -- +--------+
-SELECT _________ FROM __________________________________, __________________________________
-    WHERE ___________________________________________________________________________________;
-SELECT _________ FROM shops GROUP BY _______________________________________________________;
+-- SELECT a.food FROM shops AS a, shops AS b
+--     WHERE a.food = b.food AND a.shop < b.shop AND a.price != b.price;
+-- SELECT food FROM shops GROUP BY food HAVING COUNT(DISTINCT price) > 1;
+-- Official Solution
+SELECT a.food FROM shops AS a, shops AS b
+    WHERE a.food = b.food AND a.price > b.price;
+SELECT food FROM shops GROUP BY food HAVING MAX(price) > MIN(price);

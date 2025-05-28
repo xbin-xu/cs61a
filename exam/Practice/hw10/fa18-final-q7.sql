@@ -30,7 +30,9 @@ CREATE TABLE locations AS
 -- | 8   |
 -- | 10  |
 -- +-----+
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+SELECT course
+    FROM courses
+    WHERE h < 13 OR (h = 13 AND m < 30);
 
 
 -- (b) (4 pt) Select a two-column table with one row per location that contains
@@ -41,7 +43,10 @@ SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
 -- | VLSB     | 80 |
 -- | Wheeler  | 45 |
 -- +----------+----+
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+SELECT loc, min(len)
+    FROM courses, locations
+    WHERE name = course
+    GROUP BY loc;
 
 
 -- (c) (4 pt) Select a three-column table where each row describes an earlier
@@ -55,4 +60,10 @@ SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
 -- | 8   | 2    | 10 |
 -- | 8   | 50AC | 10 |
 -- +-----+------+----+
-SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+-- SELECT a.course, b.course, (b.h * 60 + b.m) - (a.h * 60 + a.m + a.len)
+--     FROM courses AS a, courses AS b
+--     WHERE a.h * 60 + a.m + a.len < b.h * 60 + b.m;
+-- Official Solution
+SELECT a.course, b.course, (b.h - a.h) * 60 + b.m - a.m - a.len AS gap
+    FROM courses AS a, courses AS b
+    WHERE gap > 0;
