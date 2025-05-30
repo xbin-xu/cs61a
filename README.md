@@ -1,14 +1,26 @@
 # CS61A
 
-> + Course: [CS 61A](https://cs61a.org/) | [CS 61A sp24](https://www.learncs.site/docs/curriculum-resource/cs61a)
-> + Text Book: [composing-programs](https://www.composingprograms.com/) | [composing-programs-zh](https://composingprograms.netlify.app/) | [sicp-py-zh](https://github.com/wizardforcel/sicp-py-zh?tab=readme-ov-file)
-> + Lecture: [【完结🎉】UCB CS 61A: Computer Programs, Spring 2023](https://www.bilibili.com/video/BV1s3411G7yM/)
-> + Reference Solution: [half-dreamer/CS61A-20fa](https://github.com/half-dreamer/CS61A-20fa) | [shuo-liu16/CS61A](https://github.com/shuo-liu16/CS61A)
-> + 61A Code: [61A Code](https://code.cs61a.org/) | [document](https://cs61a.org/articles/61a-code-docs/)
+> + Course: [CS 61A] | [CS 61A sp24]
+> + Text Book: [composing-programs] | [composing-programs-zh] | [sicp-py-zh]
+> + Lecture: [【完结🎉】UCB CS 61A: Computer Programs, Spring 2023]
+> + Reference Solution: [half-dreamer/CS61A-20fa] | [shuo-liu16/CS61A]
+> + 61A Code: [61A Code] | [document]
 > + 学习顺序：Text Book -> Lecture -> Q&A -> Disc/Lab/HW -> Project
 
 ~~由于现在无法访问 CS 61A 的往期课程，`disc07/lab06/hw06/ants` 及之前的内容为 sp24，后续内容待定~~
 
-Scheme 尾递归优化：参考 [Scheme 尾递归优化实现](https://github.com/ZonePG/cs-notes/blob/main/CS61A/CS61A-tail-recursion.md)
+Scheme 尾递归优化：参考 [Scheme 尾递归优化实现]
 
 disc11.scm 来自 sp25(sp24 没有 macro 的 disc)
+
+[CS 61A]: https://cs61a.org
+[CS 61A sp24]: https://www.learncs.site/docs/curriculum-resource/cs61a
+[composing-programs]: https://www.composingprograms.com
+[composing-programs-zh]: https://composingprograms.netlify.app
+[sicp-py-zh]: https://github.com/wizardforcel/sicp-py-zh?tab=readme-ov-file
+[【完结🎉】UCB CS 61A: Computer Programs, Spring 2023]: https://www.bilibili.com/video/BV1s3411G7yM
+[half-dreamer/CS61A-20fa]: https://github.com/half-dreamer/CS61A-20fa
+[shuo-liu16/CS61A]: https://github.com/shuo-liu16/CS61A
+[61A Code]: https://code.cs61a.org
+[document]: https://cs61a.org/articles/61a-code-docs
+[Scheme 尾递归优化实现]: https://github.com/ZonePG/cs-notes/blob/main/CS61A/CS61A-tail-recursion.md
