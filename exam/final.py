@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 class Link:
     """A linked list is either a Link object or Link.empty
 
@@ -86,19 +88,25 @@ Hint: Draw an environment diagram!
 (a) (0.5 pt) print(s is u)
     # True
     # False
+False
 (b) (0.5 pt) print(s is v)
     # True
     # False
+True
 (c) (0.5 pt) print(s is u[2])
     # True
     # False
+True
 (d) (0.5 pt) print(s is t[2])
     # True
     # False
+# True
+Answer: False
 (e) (2.0 pt) print(t)
-
+[2, 0, [6, 7], 5]
 (f) (2.0 pt) print(u)
-
+# [2, 0, [6, 7]]
+Answer: [2, 0, [2, 4, 2, 4]]
 """
 
 
@@ -142,10 +150,10 @@ def up(s):
     >>> up([3, 1, 2, 5, 4, 5, 7, 6, 12, 11])
     [3, 5, 7, 12]
     """
-    result = _______
+    result = []
     for x in s:
-        if _______:
-            result._______(x)
+        if not result or result[-1] < x:
+            result.append(x)
     return result
 
 
@@ -187,8 +195,8 @@ def upiter(t):
     try:
         x = next(t)
     except StopIteration:
-        _______
-    return _______ + _______ (filter( _______ , t))
+        return []
+    return [x] + upiter(filter(lambda n: n > x, t))
 
 
 # 3. (26.0 points) Dominos
@@ -258,13 +266,13 @@ class Domino:
         self.ns = ns
 
     def align(self, first):
-        assert _______, 'first must be a number on the domino.'
-        if _______:
-            _______
-        return _______
+        assert first in self.ns, 'first must be a number on the domino.'
+        if first != self.ns[0]:
+            self.ns = [self.ns[1], self.ns[0]]
+        return self
 
     def __repr__(self):
-        return _______
+        return str(self.ns[0]) + '-' + str(self.ns[1])
 
 
 """
@@ -299,8 +307,11 @@ def drop(d, ds):
     [5-2, 3-4, 5-5]
     >>> ds
     [5-2, 3-4, 5-5, 3-4]
+    >>> ds = [Domino(ns) for ns in [[5, 2], [3, 4], [5, 5], [4, 3]]]
+    >>> drop(ds[2], drop(ds[1].align(4), ds))
+    [5-2, 4-3]
     """
-    return _______
+    return [x for x in ds if x is not d]
 
 
 """
@@ -363,16 +374,20 @@ def longest(ds):
     2-1 1-2 2-3 3-2 2-3 3-4 4-3 3-4
     """
     def finish(first, rest):
-        s = [ _______ + ' ' + finish( _______ , _______ ) for d in rest if _______ ]
+        s = [
+            repr(first) + ' ' + finish(d.align(first.ns[1]), drop(d, rest))
+            for d in rest
+            if first.ns[1] in d.ns
+        ]
         if not s:
-            return _______
-        return max(s, key=_______ )
+            return repr(first)
+        return max(s, key=len)
 
     candidates = []
     for first in ds:
         candidates.append(finish(first, drop(first, ds)))
         candidates.append(finish(first.align(first.ns[1]), drop(first, ds)))
-    return max(candidates, key=_______ )
+    return max(candidates, key=len)
 
 
 """
@@ -413,8 +428,8 @@ iii. (1.0 pt) Fill in blank (q).
     # b.id
 
 SELECT a.id, a.m, a.n, COUNT(*) FROM dominos AS a, dominos AS b
-    WHERE _______ AND (_______)
-    GROUP BY _______;
+    WHERE a.id != b.id AND (a.n = b.m OR a.n = b.n)
+    GROUP BY a.id;
 """
 
 
@@ -464,7 +479,7 @@ def cycle(s):
     last = s
     while last.rest is not Link.empty:
         last = last.rest
-    s.rest, last.rest, result = _______ , _______ , _______
+    s.rest, last.rest, result = Link.empty, s, s.rest
 
     return result
 
@@ -511,9 +526,9 @@ def repeat(s, k):
     >>> list(t) # 6 of the 10 elements remain
     [2, 6, 4, 2, 6, 4]
     """
-    for x in _______:
-        yield _______
-        _______
+    for x in range(k):
+        yield s.first
+        s = cycle(s)
 
 
 # 5. (11.0 points) Trees
@@ -554,8 +569,8 @@ def count_ones(t):
     >>> count_ones(Tree(1, [Tree(2, [Tree(3, [Tree(4)]), Tree(5, [Tree(6)])])]))
     3
     """
-    count = sum([ count_ones(_______) for b in t.branches if _______ ])
-    if _______:
+    count = sum([count_ones(b) for b in t.branches if True])
+    if len(t.branches) == 1:
         return count + 1
     else:
         return count
@@ -586,6 +601,7 @@ Assume every non-leaf node in t has two children.
     # linear
     # quadratic
     # exponential
+constant
 """
 
 
@@ -601,8 +617,11 @@ def shorten(t):
     >>> shorten(Tree(1, [Tree(2, [Tree(3, [Tree(4), Tree(5)]), Tree(6, [Tree(7)])])]))
     Tree(1, [Tree(3, [Tree(4), Tree(5)]), Tree(6)])
     """
-    _______:
-        _______ = _______
+    # if len(t.branches) == 1:
+    #     t.branches = shorten(t.branches[0]).branches
+    # Official Solution
+    while len(t.branches) == 1:
+        t.branches = t.branches[0].branches
     for b in t.branches:
         shorten(b)
     return t
@@ -644,8 +663,8 @@ Hint: The built-in number? procedure returns whether its argument is a number.
 (define (truths s f)
   (if (null? s) 0
     (+
-      (if (number? (car s)) _______ (truths _______ f)) ; first argument to +
-      _______ )))                                       ; second argument to +
+      (if (number? (car s)) (if (f (car s)) 1 0) (truths (car s) f)) ; first argument to +
+      (truths (cdr s) f))))                                          ; second argument to +
 """
 
 
@@ -675,7 +694,7 @@ The only special form you may use to fill in the blank is if.
     ((null? s) 0)
     ((eight? (car s)) (+ 1 (eights (cdr s))))
     ((number? (car s)) 0)
-    (else (let ((k (eights (car s)))) (+ k _______ ) ))))
+    (else (let ((k (eights (car s)))) (+ k (if (< k (truths (car s) number?)) 0 (eights (cdr s)))) ))))
 """
 
 
@@ -725,6 +744,7 @@ def swap(t, x, y):
     >>> b is n.branches[1]
     True
     """
-    px = find(t, x, _______ )
-    py = find(t, y, _______ )
+    px = find(t, x, 't', lambda i: '.branches[' + str(i) + ']')
+    py = find(t, y, 't', lambda i: '.branches[' + str(i) + ']')
+    # px, py = py, px
     exec(px + ',' + py + '=' + py + ',' + px)
